@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hishab Limited</title>
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body class="white-bg">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>তারিখ অনুযায়ী লেনদেন (বিক্রয়)</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="sell_transaction_by_date">
+                        <thead>
+                        <tr>
+                            <th>লেনদেন নং </th>
+                            <th>যার সাথে লেনদেন </th>
+                            <th>সামগ্রিক বিল </th>
+                            <th>প্রদত্ত অর্থ</th>
+                            <th>তারিখ </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for sell in sell_transaction_with_due %}
+                        <tr class="gradeC">
+                            <td>{{ sell.id}}</td>
+                            <td>{{ sell.buyer.name }}</td>
+                            <td>{{ sell.total_amount }}</td>
+                            <td>{{ sell.total_paid }}</td>
+                            <td>{{ sell.DateAdded}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>তারিখ অনুযায়ী লেনদেন (ক্রয়)</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="purchase_transaction_by_date">
+                        <thead>
+                        <tr>
+                            <th>লেনদেন নং </th>
+                            <th>যার সাথে লেনদেন </th>
+                            <th>সামগ্রিক বিল </th>
+                            <th>প্রদত্ত অর্থ</th>
+                            <th>তারিখ </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for buy in buy_transaction_with_due %}
+                        <tr class="gradeC">
+                            <td>{{ buy.id}}</td>
+                            <td>{{ buy.seller.name }}</td>
+                            <td>{{ buy.total_amount }}</td>
+                            <td>{{ buy.total_paid }}</td>
+                            <td>{{ buy.DateAdded}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>ক্রেতার সাথে লেনদেন সমগ্র</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="summary_by_person">
+                        <thead>
+                        <tr>
+                            <th>যার সাথে লেনদেন</th>
+                            <th>টেলিফোন </th>
+                            <th>লেনদেন এর সম্পূর্ণ পরিমাণ </th>
+                            <th>লেনদেন এর প্রদত্ত পরিমাণ</th>
+                            <th>লেনদেন এর বকেয়া পরিমাণ </th>
+                            <th>সর্বশেষ লেনদেন এর পরিমান </th>
+                            <th>সর্বশেষ লেনদেন এর তারিখ </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for person in buyer_account%}
+                        <tr class="gradeC">
+                            <td>{{ person.buyer.name }}</td>
+                            <td>{{ person.buyer.phone }}</td>
+                            <td>{{ person.total_amount_of_transaction }}</td>
+                            <td>{{ person.total_paid }}</td>
+                            <td>{{ person.total_due }}</td>
+                            <td>{{ person.last_paid_amount }}</td>
+                            <td>{{ person.last_date_of_payment }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>সরবরাহকারীর সাথে লেনদেন সমগ্র</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="summary_by_distributor">
+                        <thead>
+                        <tr>
+                            <th>যার সাথে লেনদেন</th>
+                            <th>টেলিফোন </th>
+                            <th>লেনদেন এর সম্পূর্ণ পরিমাণ </th>
+                            <th>লেনদেন এর প্রদত্ত পরিমাণ</th>
+                            <th>লেনদেন এর বকেয়া পরিমাণ </th>
+                            <th>সর্বশেষ লেনদেন এর পরিমান </th>
+                            <th>সর্বশেষ লেনদেন এর তারিখ </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for person in seller_account%}
+                        <tr class="gradeC">
+                            <td>{{ person.seller.name }}</td>
+                            <td>{{ person.seller.phone }}</td>
+                            <td>{{ person.total_amount_of_transaction }}</td>
+                            <td>{{ person.total_paid }}</td>
+                            <td>{{ person.total_due }}</td>
+                            <td>{{ person.last_paid_amount }}</td>
+                            <td>{{ person.last_date_of_payment }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--<script src="{% static 'js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>-->
+
+<script>
+    window.print();
+</script>
+</body>
+
+</html>
