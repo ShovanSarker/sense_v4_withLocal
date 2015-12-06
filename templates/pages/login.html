@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hishab Limited | Login</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Sofia' rel='stylesheet' type='text/css'>
+
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">Hishab</h1>
+            </div>
+            <h3>Please sign-in</h3>
+            <form class="m-t" role="form" action="/login_info/" method="POST">{% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="username" name="username" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="password" name="password" required="">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Login</button>        
+            </form>
+            <p class="m-t"> <small>Hishab Limited &copy; 2015</small> </p>
+        </div>
+        {% if wrong %}
+        <div class="alert alert-danger alert-dismissable">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+            {{ text }}
+        </div>
+        {% endif %}
+    </div>
+    <!-- Mainly scripts -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

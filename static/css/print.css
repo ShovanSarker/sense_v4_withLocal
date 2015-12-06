@@ -1,0 +1,27 @@
+/*Reset Style*/
+@media only print{
+body {
+	margin:0; 
+	padding:0; 
+	line-height: 1.4em; 
+	word-spacing:1px; 
+	letter-spacing:0.2px;
+}
+
+/*Removing elements here*/
+
+#right_menu, 
+#header_title,
+#DataTables_Table_0_info,
+#DataTables_Table_0_paginate,
+#DataTables_Table_0_length,
+#DataTables_Table_0_filter,
+.sidebar-collapse, 
+.footer {display: none}
+}
+
+/*
+TODO 1: Table width not fixed yet 
+TODO 2:	all table data are still not in the same table for printing
+*/
+

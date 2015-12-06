@@ -1,0 +1,168 @@
+<!--charts not included-->
+{% extends "pages/base.html" %}
+{% load static %}
+{% block content %}
+
+
+<!--Page Headline-->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Transcription of {{User}}</h2>
+    </div>
+</div>
+<!--headline ends-->
+
+<!--All Transcations content-->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>All Transctions</h5>
+                    <div align="right" id="right_menu">
+                        <a class="btn btn-outline btn-danger btn-xs" title="print" href="javascript:print();"><i class="fa fa-print"></i></a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" >
+                        <thead>
+                        <tr>
+                            <th>Caller</th>
+                            <th>Transaction with</th>
+                            <th>Total Bill</th>
+                            <th>Paid Amount</th>
+                            <th>Due</th>
+                            <th>Number of Product</th>
+                            <th>Transcrition by</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeC">
+                            <td>01</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                        </tr>
+                        <tr class="gradeC">
+                            <td>02</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--All transactions content ends-->
+
+<!--with Due Credit information content-->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Credit Information with Due</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" >
+                        <thead>
+                        <tr>
+                            <th>Transaction with</th>
+                            <th>Total Bill</th>
+                            <th>Paid Amount</th>
+                            <th>Due</th>
+                            <th>Last Payment Date</th>
+                            <th>Last Paid Amount</th>
+                            <th>Date Added</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeC">
+                            <td>01</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                        </tr>
+                        <tr class="gradeC">
+                            <td>02</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--with Due Credit information content ends-->
+
+<!--without Due Credit information content-->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Credit Information without Due</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover" >
+                        <thead>
+                        <tr>
+                            <th>Transaction with</th>
+                            <th>Total Bill</th>
+                            <th>Paid Amount</th>
+                            <th>Due</th>
+                            <th>Last Payment Date</th>
+                            <th>Last Paid Amount</th>
+                            <th>Date Added</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeC">
+                            <td>01</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+
+                        </tr>
+                        <tr class="gradeC">
+                            <td>02</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                            <td>25.22</td>
+                            <td>48.66</td>
+                            <td>55.25</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--without Due Credit information content ends-->
+{% endblock %}
