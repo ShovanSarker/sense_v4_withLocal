@@ -126,6 +126,7 @@ urlpatterns = patterns('',
     # url(r'^report_transcriber_performance_json_print/', view=report_transcriber_performance_json, name='home'),
     # printing url ends
 
+
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -13,124 +13,55 @@
 
             </div>
         </div>
-
-
-
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Number of Calls</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-9 b-r">
-                                <div class="flot-chart">
-                                    <div class="flot-chart-content" id="flot-dashboard-chart"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <ul class="stat-list">
-                                    <li>
-                                        <h2 class="no-margins">{{number_of_reg_calls}}</h2>
-                                        <small>Registration</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: {{reg_call_percentage}}%;" class="progress-bar"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h2 class="no-margins ">{{number_of_transaction_calls}}</h2>
-                                        <small>Transaction calls</small>
-
-                                        <div class="progress progress-mini">
-                                            <div style="width: {{transaction_call_percentage}}%;" class="progress-bar"></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+        <div class="row white-bg">
+            <div class="col-lg-3">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">Monthly</h3>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--bar chart-->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Transaction Type</h5>
-
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-9 b-r">
-                                <div class="flot-chart">
-                                    <div class="flot-chart-content" id="flot-dashboard-chart2"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <ul class="stat-list">
-                                    <li>
-                                        <h2 class="no-margins">{{total_sell}}</h2>
-                                        <small>Sales</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: {{sell_percentage}}%;" class="progress-bar"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h2 class="no-margins ">{{total_buy}}</h2>
-                                        <small>Purchase</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: {{buy_percentage}}%;" class="progress-bar"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h2 class="no-margins ">{{total_money_transaction}}</h2>
-                                        <small>Money Transaction</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: {{money_transaction_percentage}}%;" class="progress-bar"></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">D&P</h3>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--pie chart-->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Due Sell</h5>
-
-
+            <div class="col-lg-3">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">Products</h3>
+                        </div>
                     </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-9 b-r">
-                                <div class="flot-chart">
-                                    <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <ul class="stat-list">
-                                    <li>
-                                        <h2 class="no-margins">{{number_of_transactions}}</h2>
-                                        <small>Number Total Transaction</small>
-                                    </li>
-                                    <li>
-                                        <h2 class="no-margins ">{{number_of_transactions_with_due}}</h2>
-                                        <small>Number Total Transaction without Due</small>
-                                    </li>
-                                    <li>
-                                        <h2 class="no-margins ">{{number_of_transactions_without_due}}</h2>
-                                        <small>Number Total Transaction with Due</small>
-                                    </li>
-                                </ul>
-                            </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">Sales</h3>
                         </div>
                     </div>
                 </div>

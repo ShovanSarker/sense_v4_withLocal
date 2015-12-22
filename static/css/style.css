@@ -39,8 +39,8 @@ h5 {
 }
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 a, a:hover, a:active, a:focus,
@@ -50,7 +50,7 @@ input::-moz-focus-inner {
   outline: 0;
 }
 input[type=number] {
-    -moz-appearance:textfield;
+  -moz-appearance:textfield;
 }
 .nav > li > a {
   color: #a7b1c2;
@@ -172,10 +172,10 @@ input[type=number] {
 }
 
 .logo-text h3 {
-    color: #f1f1f1;
-    font-family: "Sofia",cursive;
-    font-size: 40px;
-    font-weight: normal;
+  color: #f1f1f1;
+  font-family: "Sofia",cursive;
+  font-size: 40px;
+  font-weight: normal;
 }
 
 .pace-done .nav-header {
@@ -307,7 +307,8 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   color: #1cc09f;
 }
 .logo-element {
-  font-family: 'Sofia', cursive;
+  /*font-family: 'Sofia', cursive;*/
+  font-family: Josefin Sans;
   text-align: center;
   font-size: 18px;
   font-weight: 600;
@@ -3103,12 +3104,15 @@ body.modal-open {
   margin-top: -330px;
 }
 .logo-name {
-    color: #a3a3a3;
-    font-family: "Sofia",cursive;
-    font-size: 180px !important;
-    letter-spacing: -7px;
-    margin-bottom: 0;
-    margin-left: -30px;
+  color: #a3a3a3;
+  /*font-family: "Sofia",cursive;*/
+  font-family: Josefin Sans;
+  font-size: 80px !important;
+  letter-spacing: -7px;
+  margin-bottom: 0;
+  /*margin-left: -30px;*/
+  margin-left: auto;
+  margin-right: auto;
 }
 .middle-box h1 {
   font-size: 170px;
@@ -4142,8 +4146,8 @@ Type Head
 
 .tt-query {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .tt-hint {
@@ -4157,12 +4161,12 @@ Type Head
   background-color: #fff;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
-/*  -webkit-border-radius: 8px;
-     -moz-border-radius: 8px;
-          border-radius: 8px;*/
+  /*  -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;*/
   -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
 }
 
 .tt-suggestion {

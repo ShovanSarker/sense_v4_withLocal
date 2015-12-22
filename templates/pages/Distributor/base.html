@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hishab Limited</title>
+
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <!-- Data Tables -->
+    <!--<link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" rel="stylesheet">-->
+    <link href="{% static 'css/plugins/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/plugins/dataTables/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="http://cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css" rel="stylesheet">
+
+    <link href="{% static 'css/plugins/iCheck/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/print.css' %}" rel="stylesheet" type="text/css" media="print">
+
+    <!-- Mainly scripts -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/metisMenu/1.1.3/metisMenu.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.1/jquery.slimscroll.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
+    <script src="{% static 'js/plugins/iCheck/icheck.min.js' %}"></script>
+
+    <!-- Data Tables -->
+    <script src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
+    <script src="http://cdn.datatables.net/responsive/1.0.3/js/dataTables.responsive.min.js"></script>
+    <script src="http://cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
+
+    <!-- Graphs & Charts -->
+    <!-- Morris -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js" rel="stylesheet">
+    <!-- Flot -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+    <script src="{% static 'js/plugins/flot/jquery.flot.tooltip.min.js' %}"></script>
+    <script src="{% static 'js/plugins/flot/jquery.flot.spline.js' %}"></script>
+    <script src="{% static 'js/plugins/flot/jquery.flot.resize.js' %}"></script>
+    <script src="{% static 'js/plugins/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'js/plugins/flot/jquery.flot.time.js' %}"></script>
+    <!-- Peity -->
+    <script src="{% static 'js/plugins/peity/jquery.peity.min.js' %}"></script>
+    <!-- GITTER -->
+    <script src="{% static 'js/plugins/gritter/jquery.gritter.min.js' %}"></script>
+    <!-- EayPIE -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.4/jquery.easypiechart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+    <!-- ChartJS-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="{% static 'js/inspinia.js' %}"></script>
+
+
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown logo-text profile-element">
+                        <h3>Hishab Limited</h3>
+                    </div>
+                    <div class="logo-element">
+                        SE
+                    </div>
+                </li>
+                <li class="active">
+                    <a href="/"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-plus-square"></i> <span class="nav-label">Add</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="/products">Product</a></li>
+                        <li><a href="/addsubscriber">SR</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="#" role="button" class="" data-formaction="/monthly_shop_reports/">Monthly Sales Summary</a></li>
+                        <li><a href="#" role="button" class="" data-formaction="/due_reports/">Dues & Payment</a></li>
+                        <li><a href="#" role="button" class="" data-formaction="/payment_reports/">List Of Products</a></li>
+                        <li><a href="#" role="button" class="" data-formaction="/sales_analysis_report/">Sales Analysis</a></li>
+                        <li><a href="#" role="button" class="" data-formaction="">Pre-Order</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li><span class="m-r-sm text-muted welcome-message">VPOS Prototype V.3</span></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out"></i> Log out [{{transcriber_name}}] </a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!--modal for shop shop recharge-->
+        <div class="modal inmodal fade" id="rechargeSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Select Shop</h4>
+                    </div>
+                    <form role="form" id="rechargeSelectForm" method="post" action="/user_balance_recharge/">{% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="shop">User List</label>
+                                <select class="form-control m-b" name="user">
+                                    {% for shop in all_user_for_base %}
+                                    <option>{{shop.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label class="control-label">Amount</label>
+                                <input type="number" placeholder="Amount to recharge" class="form-control" name="recharge_amount" required="">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--modal for shop selection in product report-->
+        <div class="modal inmodal fade" id="productSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Select Shop</h4>
+                    </div>
+                    <form role="form" id="productSelectForm" method="get">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="shop">Shop List</label>
+                                <select class="form-control m-b" name="shop" id="shop">
+                                    {% for shop in shop_list_base %}
+                                    <option>{{shop.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal inmodal fade" id="productSelectModal2" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Select Consumer</h4>
+                    </div>
+                    <form role="form" id="productSelectForm2" method="get">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="shop1">Consumer List</label>
+                                <select class="form-control m-b" name="shop" id="shop1">
+                                    {% for consumer in all_consumer_for_base %}
+                                    <option>{{consumer.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% block content %} {% endblock %}
+        <div class="footer">
+            <div>
+                <strong>Copyright</strong> Hishab Limited &copy; 2014-2015
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/plugins/pace/pace.min.js' %}"></script>
+</body>
+</html>
