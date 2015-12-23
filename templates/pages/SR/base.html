@@ -79,36 +79,12 @@
                 <li class="active">
                     <a href="/"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span></a>
                 </li>
-{#                <li>#}
-{#                    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports For Shop</span><span class="fa arrow"></span></a>#}
-{#                    <ul class="nav nav-second-level">#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/monthly_shop_reports/">Monthly Shop Summary</a></li>#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/due_reports/">Due</a></li>#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/payment_reports/">Payment</a></li>#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/product_reports/">Product</a></li>#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/sales_analysis_report/">Sales Analysis</a></li>#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/-/">Profit Analysis</a></li>#}
-{#                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/analytical_reports/">Analytical Reports</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports For Consumers</span><span class="fa arrow"></span></a>#}
-{#                    <ul class="nav nav-second-level">#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/monthly_shop_reports/">Monthly Consumer Summary</a></li>#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/due_reports/">Due</a></li>#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/payment_reports/">Payment</a></li>#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/product_reports/">Product</a></li>#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/sales_analysis_report/">Sales Analysis</a></li>#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/profit_reports/">Profit Analysis</a></li>#}
-{#                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/analytical_reports/">Analytical Reports</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-
                 <li><a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/monthly_shop_reports/">Monthly Sales Summary</a></li>
-                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/due_reports/">Dues & Payment</a></li>
-                        <li><a href="#" role="button" class="uiShopModal" data-formaction="/sales_analysis_report/">Sales Analysis</a></li>
+                        <li><a href="#" role="button" data-toggle="modal" data-target="#monthlySummary">Monthly Sales Summary</a></li>
+                        <li><a href="/due_reports/" role="button">Dues & Payment</a></li>
+                        <li><a href="/sales_analysis_report/" role="button">Sales Analysis</a></li>
+                        <li><a href="#">Pre-Order</a></li>
                     </ul>
                 </li>
             </ul>
@@ -128,52 +104,24 @@
             </nav>
         </div>
 
-        <!--modal for shop shop recharge-->
-        <div class="modal inmodal fade" id="rechargeSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <!--modal for monthly sales summary-->
+        <div class="modal inmodal fade" id="monthlySummary" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Select Shop</h4>
+                        <h4 class="modal-title">Mothly Sales Summary</h4>
                     </div>
-                    <form role="form" id="rechargeSelectForm" method="post" action="/user_balance_recharge/">{% csrf_token %}
+                    <form role="form" id="monthlySummaryForm" method="post" action="/monthly_shop_reports/">{% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="shop">User List</label>
-                                <select class="form-control m-b" name="user">
-                                    {% for shop in all_user_for_base %}
-                                    <option>{{shop.name}}</option>
-                                    {% endfor %}
+                                <label for="shop">Year</label>
+                                <select class="form-control m-b" name="year">
+                                    <option>Year</option>
                                 </select>
-                                <label class="control-label">Amount</label>
-                                <input type="number" placeholder="Amount to recharge" class="form-control" name="recharge_amount" required="">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!--modal for shop selection in product report-->
-        <div class="modal inmodal fade" id="productSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Select Shop</h4>
-                    </div>
-                    <form role="form" id="productSelectForm" method="get">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop">Shop List</label>
-                                <select class="form-control m-b" name="shop" id="shop">
-                                    {% for shop in shop_list_base %}
-                                    <option>{{shop.name}}</option>
-                                    {% endfor %}
+                                <label for="shop">Month</label>
+                                <select class="form-control m-b" name="month">
+                                    <option>Month</option>
                                 </select>
                             </div>
                         </div>
@@ -186,33 +134,6 @@
             </div>
         </div>
 
-
-        <div class="modal inmodal fade" id="productSelectModal2" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Select Consumer</h4>
-                    </div>
-                    <form role="form" id="productSelectForm2" method="get">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop1">Consumer List</label>
-                                <select class="form-control m-b" name="shop" id="shop1">
-                                    {% for consumer in all_consumer_for_base %}
-                                    <option>{{consumer.name}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
         {% block content %} {% endblock %}
         <div class="footer">

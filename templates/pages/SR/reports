@@ -1,38 +1,8 @@
-Reports to create:
-	-> product Report (summary)
-	-> Transcription Report (Summary) -|
-	-> Transaction Report (Summary)	  -|->same
-	-> User Call Duration and Airtime (Summary)
-	-> Monthly and hourly call duration (Summary)
-	-> Call Transcription Report (Summary)
-	-> Recharge (Summary)
+reports done for Shop -->
+
+1. reports for dues & payment in -> report_due.html
+2. reports for monthly shop summary in -> report_monthly_shop.html | modal for year month selection is in base.html
+3. reports for sales analysis in -> report_sales_analysis.html
+4. reports for pre-order in -> report_preorder.html
 
 
-update:
-
-Reporting:
-    Report printing
-    Daily sales report --> sent SMS to shops at 10PM with Total Sales, purchase, sales due, purchase due
-    Monthly/shop
-        Summary - Total Sale, purchase, sales due, purchase due
-        By date - Date | total sale | number of product | total due | total purchase | number of product | total purchase due
-        By transaction - Transaction id | date | type | with | number of product | total | due
-    Due
-        Transactions (By Date) - Transaction id | date | with | total | due
-        Summary (By Person) - With | total | due | last payment
-        Summary (By distributor) - With | total | due | last payment
-    Payment
-        Transactions (By Date) - Transaction id | date | with | payment
-        Summary (By Person) - With | total | due | last payment
-        Summary (By distributor) - With | total | due | last payment
-    Product
-        Monthly sales/purchase by date (retail/distributor) - Date | Product name | quantity | unit | daily avg price
-        Monthly sale/purchase by product (retail/distributor) - Product Name | unit | Quantity | avg price
-        Current inventory
-    Analytical reports (graphs)
-        Most sold products (10/20)
-        Most profitable product (need to calculate using distributor purchase and sales price)
-        Top price changed products [products that changed price frequently, also the products that has maximum price change(positive or negative)]
-        Weekly product sales (top 5 products that sold on every week day i.e. On Monday: rice, potato; on Tuesday: Dal, onion etc)
-        Product due list (which product consumers purchase on dues most)
-        Avg due and clearance comparison

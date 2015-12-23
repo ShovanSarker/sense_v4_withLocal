@@ -175,6 +175,95 @@
             </div>
         </div>
     </div>
+
+{#--------------------------------------payment ----------------------------#}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>ক্রেতার সাথে লেনদেন সমগ্র</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="summary_by_person">
+                        <thead>
+                        <tr>
+                            <th>যার সাথে লেনদেন</th>
+                            <th>টেলিফোন </th>
+                            <th>লেনদেন এর সম্পূর্ণ পরিমাণ </th>
+                            <th>লেনদেন এর প্রদত্ত পরিমাণ</th>
+                            <th>লেনদেন এর বকেয়া পরিমাণ </th>
+                            <th>সর্বশেষ লেনদেন এর পরিমান </th>
+                            <th>সর্বশেষ লেনদেন এর তারিখ </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for person in buyer_account%}
+                        <tr class="gradeC">
+                            <td>{{ person.buyer.name }}</td>
+                            <td>{{ person.buyer.phone }}</td>
+                            <td>{{ person.total_amount_of_transaction }}</td>
+                            <td>{{ person.total_paid }}</td>
+                            <td>{{ person.total_due }}</td>
+                            <td>{{ person.last_paid_amount }}</td>
+                            <td>{{ person.last_date_of_payment }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>সরবরাহকারীর সাথে লেনদেন সমগ্র</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="summary_by_distributor">
+                        <thead>
+                        <tr>
+                            <th>যার সাথে লেনদেন</th>
+                            <th>টেলিফোন </th>
+                            <th>লেনদেন এর সম্পূর্ণ পরিমাণ </th>
+                            <th>লেনদেন এর প্রদত্ত পরিমাণ</th>
+                            <th>লেনদেন এর বকেয়া পরিমাণ </th>
+                            <th>সর্বশেষ লেনদেন এর পরিমান </th>
+                            <th>সর্বশেষ লেনদেন এর তারিখ </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for person in seller_account%}
+                        <tr class="gradeC">
+                            <td>{{ person.seller.name }}</td>
+                            <td>{{ person.seller.phone }}</td>
+                            <td>{{ person.total_amount_of_transaction }}</td>
+                            <td>{{ person.total_paid }}</td>
+                            <td>{{ person.total_due }}</td>
+                            <td>{{ person.last_paid_amount }}</td>
+                            <td>{{ person.last_date_of_payment }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% else %}
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -323,6 +412,99 @@
                             <td>{{ person.seller.phone }}</td>
                             <td>{{ person.amount }}</td>
                             <td>{{ person.DateAdded }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{#-------------------------------------------payment---------------------------------#}
+    <!--Summary (By Person) table-->
+    <!--<div role="tabpanel" class="tab-pane active" id="profile">-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Summary (By Person)</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="summary_by_person">
+                        <thead>
+                        <tr>
+                            <th>With</th>
+                            <th>Phone No.</th>
+                            <th>Total Amount of Transaction</th>
+                            <th>Total Paid Amount</th>
+                            <th>Total Due</th>
+                            <th>Last Payment</th>
+                            <th>Last Date of Payment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for person in buyer_account%}
+                        <tr class="gradeC">
+                            <td>{{ person.buyer.name }}</td>
+                            <td>{{ person.buyer.phone }}</td>
+                            <td>{{ person.total_amount_of_transaction }}</td>
+                            <td>{{ person.total_paid }}</td>
+                            <td>{{ person.total_due }}</td>
+                            <td>{{ person.last_paid_amount }}</td>
+                            <td>{{ person.last_date_of_payment }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--</div>-->
+
+    <!--Summary (By Distributor) table-->
+    <!--<div role="tabpanel" class="tab-pane active" id="messages">-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Summary (By Distributor)</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-striped table-bordered table-hover uiDataTablesDueReport" id="summary_by_distributor">
+                        <thead>
+                        <tr>
+                            <th>With</th>
+                            <th>Phone No.</th>
+                            <th>Total Amount of Transaction</th>
+                            <th>Total Paid Amount</th>
+                            <th>Total Due</th>
+                            <th>Last Payment</th>
+                            <th>Last Date of Payment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for person in seller_account%}
+                        <tr class="gradeC">
+                            <td>{{ person.seller.name }}</td>
+                            <td>{{ person.seller.phone }}</td>
+                            <td>{{ person.total_amount_of_transaction }}</td>
+                            <td>{{ person.total_paid }}</td>
+                            <td>{{ person.total_due }}</td>
+                            <td>{{ person.last_paid_amount }}</td>
+                            <td>{{ person.last_date_of_payment }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

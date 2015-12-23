@@ -82,7 +82,7 @@
                 <li>
                     <a href="#"><i class="fa fa-plus-square"></i> <span class="nav-label">Add</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="/products">Product</a></li>
+                        <li><a href="#" role="button" data-toggle="modal" data-target="#addProductForm">Product</a></li>
 
                     </ul>
                 </li>
@@ -90,10 +90,10 @@
                 <li>
                     <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports For Consumers</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/monthly_shop_reports/">Monthly Shop Summary</a></li>
-                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/due_reports/">Dues & Payment</a></li>
-                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/product_reports/">List ofProduct</a></li>
-                        <li><a href="#" role="button" class="uiConsumerModal" data-formaction="/sales_analysis_report/">Sales Analysis</a></li>
+                        <li><a href="#" role="button" data-toggle="modal" data-target="#monthlySummary">Monthly Shop Summary</a></li>
+                        <li><a href="/due_reports/" role="button">Dues & Payment</a></li>
+                        <li><a href="/product_reports/" role="button">List ofProduct</a></li>
+                        <li><a href="/sales_analysis_report/" role="button">Sales Analysis</a></li>
                     </ul>
                 </li>
             </ul>
@@ -114,52 +114,25 @@
             </nav>
         </div>
 
-        <!--modal for shop shop recharge-->
-        <div class="modal inmodal fade" id="rechargeSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Select Shop</h4>
-                    </div>
-                    <form role="form" id="rechargeSelectForm" method="post" action="/user_balance_recharge/">{% csrf_token %}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop">User List</label>
-                                <select class="form-control m-b" name="user">
-                                    {% for shop in all_user_for_base %}
-                                    <option>{{shop.name}}</option>
-                                    {% endfor %}
-                                </select>
-                                <label class="control-label">Amount</label>
-                                <input type="number" placeholder="Amount to recharge" class="form-control" name="recharge_amount" required="">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
-        <!--modal for shop selection in product report-->
-        <div class="modal inmodal fade" id="productSelectModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <!--modal for monthly sales summary-->
+        <div class="modal inmodal fade" id="monthlySummary" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Select Shop</h4>
+                        <h4 class="modal-title">Mothly Shop Summary</h4>
                     </div>
-                    <form role="form" id="productSelectForm" method="get">
+                    <form role="form" id="monthlySummaryForm" method="post" action="/monthly_shop_reports/">{% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="shop">Shop List</label>
-                                <select class="form-control m-b" name="shop" id="shop">
-                                    {% for shop in shop_list_base %}
-                                    <option>{{shop.name}}</option>
-                                    {% endfor %}
+                                <label for="shop">Year</label>
+                                <select class="form-control m-b" name="year">
+                                    <option>Year</option>
+                                </select>
+                                <label for="shop">Month</label>
+                                <select class="form-control m-b" name="month">
+                                    <option>Month</option>
                                 </select>
                             </div>
                         </div>
@@ -172,33 +145,59 @@
             </div>
         </div>
 
-
-        <div class="modal inmodal fade" id="productSelectModal2" tabindex="-1" role="dialog" aria-hidden="true">
+            <!--modal for Add Product-->
+        <div class="modal inmodal fade" id="addProductForm" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Select Consumer</h4>
+                        <h4 class="modal-title">Add Product</h4>
                     </div>
-                    <form role="form" id="productSelectForm2" method="get">
+                    <form role="form" action="/product_reports/" method="post">
+                        {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="shop1">Consumer List</label>
-                                <select class="form-control m-b" name="shop" id="shop1">
-                                    {% for consumer in all_consumer_for_base %}
-                                    <option>{{consumer.name}}</option>
-                                    {% endfor %}
-                                </select>
+                                <label for="productName">Product Name</label>
+                                <input class="form-control" type="text" name="name" id="productName" required="">
+                            </div>
+                            <div class="form-group">
+                                <label for="altName">Alternative Name</label>
+                                <input class="form-control" type="text" name="altr_name" id="altName">
+                            </div>
+                            <div class="form-group">
+                                <label for="localName">Local Name</label>
+                                <input class="form-control" type="text" name="bangla_name" id="localName">
+                            </div>
+                            <div class="form-group">
+                                <label for="retailUnit">Retail Unit</label>
+                                <input class="form-control" type="text" name="retail_unit" id="retailUnit" required="">
+                            </div>
+                            <div class="form-group">
+                                <label for="priceRetail">Price per retail unit</label>
+                                <input class="form-control" type="text" name="retail_price" id="priceRetail">
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkUnit">Bulk unit name</label>
+                                <input class="form-control" type="text" name="bulk_unit" id="bulkUnit">
+                            </div>
+                            <div class="form-group">
+                                <label for="priceBulk">Bulk Price</label>
+                                <input class="form-control" type="text" name="bulk_price" id="priceBulk">
+                            </div>
+                            <div class="form-group">
+                                <label for="unitMulti">Retail to Bulk Unit Conversion Multiplier</label>
+                                <input class="form-control" type="text" name="converter" id="unitMulti">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button class="btn btn-sm btn-primary" type="submit">Add Product</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
 
         {% block content %} {% endblock %}
         <div class="footer">
