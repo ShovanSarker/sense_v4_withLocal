@@ -8,9 +8,9 @@ import math
 @csrf_exempt
 def incoming_call(request):
     get_data = request.GET
-    print(get_data['session.callerid']);
+    print(get_data)
     if 'session.callerid' in get_data:
-        phone = get_data['session.callerid'][3:]
+        phone = get_data['session.callerid'][-6:]
         if Consumer.objects.filter(phone__endswith=phone).exists():
             """caller level id being done here"""
             caller = Consumer.objects.get(phone__endswith=phone)
@@ -72,6 +72,19 @@ def incoming_call(request):
                               {'caller': get_data['session.callerid'], 'purpose': call_purpose, 'sell': sell},
                               content_type='application/xml')
         else:
-            return render(request, 'IVR/registration.xml', {'caller': get_data['session.callerid']}, content_type='application/xml')
+            return render(request, 'IVR/registration.xml', {'caller': get_data['session.callerid'],
+                                                            'calledid': get_data['session.calledid']}, content_type='application/xml')
     else:
         return render(request, 'IVR/base.xml', content_type='application/xml')
+
+
+@csrf_exempt
+def incoming_call2(request):
+    get_data = request.GET
+    print(get_data)
+    if 'session.callerid' in get_data:
+        phone = get_data['session.callerid'][3:]
+        return render(request, 'IVR/testivr.xml', {'caller': get_data['session.callerid']}, content_type='application/xml')
+    else:
+        return render(request, 'IVR/base.xml', content_type='application/xml')
+

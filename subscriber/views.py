@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from local_lib.v3 import is_japanese_number, is_bangladeshi_number, is_number, is_float, send_sms
 from django.contrib.auth.decorators import login_required
-from .models import Consumer, ConsumerType, Connectivity
+from django.contrib.auth.models import User
+from transcriber_management.models import Transcriber
+from .models import Consumer, ConsumerType, Connectivity, ACL
 from voice_records.models import VoiceReg
 
 
@@ -48,6 +50,7 @@ def add_subscriber(request):
                     subscriber_type = ConsumerType.objects.get(type_name__exact='Seller')
                     if 'type' in post_data:
                         subscriber_type = ConsumerType.objects.get(type_name__exact=post_data['type'])
+
                     email = ''
                     if 'email' in post_data:
                         email = post_data['email']
@@ -62,7 +65,18 @@ def add_subscriber(request):
                                             age=age,
                                             married=married)
                     new_consumer.save()
-                    welcome_sms = 'Thanks for connecting with hishab Limited. For more info go to www.hishab.co .'
+                    print(phone[-6:])
+                    print(post_data['child'])
+                    user = User.objects.create_user(phone[-8:], phone[-8:]+'@sense.ai',
+                                                    post_data['child'])
+                    user.save()
+                    add_new_subscriber = ACL(loginUser=new_consumer,
+                                             loginID=phone[-8:])
+                    add_new_subscriber.save()
+                    notification = 'Transcriber Successfully Added.'
+                    # add_to_transcriber = Transcriber(name=post_data['username'])
+                    # add_to_transcriber.save()
+                    welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
                     send_sms(welcome_sms, phone)
                     notification = 'New User ' + name + ' was added successfully'
         else:
@@ -152,7 +166,15 @@ def add_subscriber_outside(request):
                                     age=age,
                                     married=married)
             new_consumer.save()
-
+            # print(phone[-6:])
+            # print(post_data['child'])
+            # user = User.objects.create_user(phone[-6:], phone[-6:]+'@sense.ai',
+            #                                 '000000'+post_data['child'])
+            # user.save()
+            # # notification = 'Transcriber Successfully Added.'
+            # add_to_transcriber = Transcriber(name=post_data['username'])
+            # add_to_transcriber.save()
+            welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
             if 'record_id' in post_data:
                 if not post_data['record_id'] == '':
                     call_record = VoiceReg.objects.get(pk=post_data['record_id'])
@@ -165,7 +187,7 @@ def add_subscriber_outside(request):
                     new_dependency = Connectivity(user=new_consumer, introduced_by=introduced_by_object)
                     new_dependency.save()
             notification = 'New User ' + name + ' was added successfully'
-            welcome_sms = 'Thanks for connecting with Hishab Limited. For more info go to www.hishab.co .'
+            # welcome_sms = 'Thanks for connecting with Hishab Limited. For more info go to www.hishab.co .'
             send_sms(welcome_sms, phone)
             res = HttpResponse(new_consumer.id)
 
