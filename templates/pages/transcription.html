@@ -1,0 +1,522 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block content %}
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    <div class="file-manager">
+                        <div class="space-25"></div>
+                        <h5>Folders</h5>
+                        <ul class="folder-list m-b-md" style="padding: 0">
+                            <li><a href="#" id="transList"> <i class="fa fa-inbox "></i> Transaction <span class="label label-warning pull-right">{{pending_calls}}</span> </a></li>
+                            <li><a href="#" id="regList"> <i class="fa fa-envelope-o"></i> Registrations <span class="label label-info pull-right">{{pending_calls_reg}}</span> </a></li>
+                            <li><a href="#" id="failList"> <i class="fa fa-file-text-o"></i> Failed <span class="label label-danger pull-right">{{number_of_fail_calls}}</span></a></li>
+                            <li><a href="#" id="preTranslationList"> <i class="fa fa-file-text-o"></i> Previous Translations <span class="label label-success pull-right">{{number_of_completed_calls}}</span></a></li>
+                        </ul>
+                        <h5>IVR Level</h5>
+                        <ul class="category-list" style="padding: 0">
+                            <li><a href="#"> <i class="fa fa-circle text-navy"></i> Beginner </a></li>
+                            <li><a href="#"> <i class="fa fa-circle text-primary"></i> Intermediate </a></li>
+                            <li><a href="#"> <i class="fa fa-circle text-danger"></i> Advance </a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tranCallList" class="col-lg-10 col-md-10 col-sm-9 col-xs-12 animated fadeInRight">
+            <div class="mail-box-header">
+                <h2>Calls ({{pending_calls}})</h2>
+
+                <div class="mail-tools m-t-md">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <button id="refreshCallList" class="btn btn-white btn-sm" data-placement="left" title="Refresh call list"><i class="fa fa-refresh"></i> Refresh</button>
+                    <!-- Todo refresh call list using ajax -->
+                </div>
+            </div>
+            <div class="mail-box">
+                <table class="table table-hover table-striped table-mail" id="callTable"></table>
+            </div>
+        </div>
+
+        <div id="transactionDetails" class="col-lg-10 col-md-10 col-sm-9 col-xs-12 hide animated fadeInRight">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <button class="btn inline" id="transDetailsBack"><i class="fa fa-list"></i></button>
+                    <h3 id="transDetailsHeader" class="inline"></h3>
+                </div>
+                <div class="ibox-content">
+                    <div class="mail-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-danger fade in hide modalError" role="alert">
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>Error! </strong><span class="alertText"> A problem has been occurred while submitting your data.</span>
+                                </div>
+                                <div class="alert alert-info fade in hide modalInfo" role="alert">
+                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong><span class="infoText"> A problem has been occurred while submitting your data.</span></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 b-r">
+                                <div class="mail-attachment">
+                                    <h3>Audio Files</h3>
+                                    <div id="audioFiles">
+                                        <ul class="unstyled">
+                                            <li id="transAudio_1" class="hide"><audio id="transAudio_1_player" controls="controls" type="audio/wav"></audio></li>
+                                            <li id="transAudio_2" class="hide"><audio id="transAudio_2_player" controls="controls" type="audio/wav"></audio></li>
+                                            <li id="transAudio_3" class="hide"><audio id="transAudio_3_player" controls="controls" type="audio/wav"></audio></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mail-attachment">
+                                    <h3>Transcription</h3>
+                                    <h4>Products<button class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#addProductModal">Add new product</button></h4>
+                                    <form id="productForm" role="form" class="form-inline">
+                                        <div id="product_name_box" class="form-group">
+                                            <input class="form-control typeahead" id="product_name" name="product_name" type="text" placeholder="Product Name">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="number" name="product_quantity" id="product_quantity" class="form-control" placeholder="Quantity"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="number" name="product_unit_price" id="product_unit_price" class="form-control" placeholder="Unit Price"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+
+                                    </form>
+                                    <form id="transPaymentInfo" role="form" class="form-inline">
+                                        <h4>Payments</h4>
+
+                                        <div class="form-group">
+                                            <input type="number" name="transTotal" id="transTotal" placeholder="Total" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="number" name="transPaid" id="transPaid" placeholder="Paid" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="number" name="transDue" id="transDue" placeholder="Due" class="form-control">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                    </form>
+                                    <form id="trans2ndParty" role="form" class="form-inline">
+                                        <h4>2nd party<button class="btn btn-xs btn-info pull-right newRegistrationButton">Add new Subscriber</button></h4>
+
+                                        <div id="other_party_box" class="form-group">
+                                            <input class="form-control typeahead" id="transOtherParty" name="transOtherParty" type="text" placeholder="Name or Number">
+                                        </div>
+
+                                        <!--<div class="checkbox m-l m-r-xs"><label class="i-checks"> <input type="checkbox" id="no_subscriber"> No 2nd party name or number </label></div>-->
+                                        <!--<div class="checkbox m-l m-r-xs"><label class="i-checks"> <input type="checkbox" id="is_distributor"> Distributor </label></div>-->
+
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <div class="mail-attachment">
+                                    <h3>Review Transcription</h3>
+                                    <table class="table table-bordered table-hover" id="reviewProducts">
+                                        <thead>
+                                        <tr>
+                                            <td>Product</td>
+                                            <td>Unit</td>
+                                            <td>Price</td>
+                                            <!--<td></td>-->
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-lg-offset-4"><p class="pull-right">Total</p></div>
+                                        <div class="col-lg-4" id="reviewTotal"></div>
+                                        <div class="col-lg-4 col-lg-offset-4"><p class="pull-right">Paid</p></div>
+                                        <div class="col-lg-4" id="reviewPaid"></div>
+                                        <div class="col-lg-4 col-lg-offset-4"><p class="pull-right">Due</p></div>
+                                        <div class="col-lg-4" id="reviewDue"></div>
+                                        <div class="col-lg-5">2nd Party:</div>
+                                        <div class="col-lg-6" id="reviewOtherParty"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mail-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#translationFailedModal">Mark as failed</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <form id="finalForm" action="/transcription_page/" method="post">{% csrf_token %}
+                                    <input type="hidden" name="caller_id" id="caller_id">
+                                    <input type="hidden" name="call_id" id="call_id">
+                                    <input type="hidden" name="distributorTransaction" id="distributorTransaction">
+                                    <input type="hidden" name="transactionProducts" id="transactionProducts">
+                                    <input type="hidden" name="transactionTotalEstimated" id="transactionTotalEstimated">
+                                    <input type="hidden" name="transactionTotal" id="transactionTotal">
+                                    <input type="hidden" name="transactionPaid" id="transactionPaid">
+                                    <input type="hidden" name="transactionDue" id="transactionDue">
+                                    <input type="hidden" name="otherParty" id="otherParty">
+                                    <input type="hidden" name="timetaken" id="timetaken">
+                                    <button type="submit" class="btn btn-success pull-right">Save Record</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--regstration call list generator-->
+        <div id="registrationCallList" class="col-lg-10 col-md-10 col-sm-9 col-xs-12 hide animated fadeInRight">
+            <div class="mail-box-header">
+                <h2>Registration ({{pending_calls_reg}})</h2>
+
+                <div class="mail-tools m-t-md">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <button id="refreshRegList" class="btn btn-white btn-sm" data-placement="left" title="Refresh call list"><i class="fa fa-refresh"></i> Refresh</button>
+                    <!-- Todo refresh call list using ajax -->
+                </div>
+            </div>
+            <div class="mail-box">
+                <table class="table table-hover table-striped table-mail" id="registrationCallTable"></table>
+                <!--table id was callTable-->
+            </div>
+        </div>
+
+        <!--failed translation list generator-->
+        <div id="failedTranslationList" class="col-lg-10 col-md-10 col-sm-9 col-xs-12 hide animated fadeInRight">
+            <!-- Two action button for this list one for only listen the audio (open in a modal), another one same as translation for retry -->
+            <div class="mail-box-header">
+                <h2>Failed Translation ({{number_of_fail_calls}})</h2>
+
+                <div class="mail-tools m-t-md">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <button id="refreshFailList" class="btn btn-white btn-sm" data-placement="left" title="Refresh call list"><i class="fa fa-refresh"></i> Refresh</button>
+                </div>
+            </div>
+            <div class="mail-box">
+                <table class="table table-hover table-striped table-mail" id="failCallTable">
+                    <thead class="hide">
+                    <tr>
+                        <th>Caller</th>
+                        <th>Caller Number</th>
+                        <th>Time</th>
+                        <th>Transcriber</th>
+                        <th>Reason</th>
+                        <th>Audio</th>
+                        <th>Retry</th>
+                    </tr>
+                    </thead>
+                </table>
+                <!--table id was callTable-->
+            </div>
+        </div>
+
+        <!--previous transaction list generator-->
+        <div id="previousTransactions" class="col-lg-10 col-md-10 col-sm-9 col-xs-12 hide animated fadeInRight">
+            <!-- Column: Caller, call duration, timestamp, translator, translation time, button for audio playback (open the audio files in modal). Table need to be data table -->
+            <div class="mail-box-header">
+                <h2>Previous Transaction ({{number_of_completed_calls}})</h2>
+                <div class="mail-tools m-t-md">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <button id="refreshPreTransList" class="btn btn-white btn-sm" data-placement="left" title="Refresh call list"><i class="fa fa-refresh"></i> Refresh</button>
+                    <!-- Todo refresh call list using ajax -->
+                </div>
+            </div>
+            <div class="mail-box">
+                <table class="table table-hover table-striped table-mail" id="previousTranslationTable">
+                    <thead class="hide">
+                    <tr>
+                        <th>Caller Number</th>
+                        <th>Time</th>
+                        <th>Audio</th>
+                    </tr>
+                    </thead>
+                </table>
+                <!--table id was callTable-->
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal for Translation Failed -->
+<div class="modal inmodal fade" id="translationFailedModal" tabindex="-1" role="dialog" aria-labelledby="translationFailedModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="traslationFailedModalLabel">Translation Failed !</h4>
+            </div>
+            <form id="translationFailedForm" class="form-horizontal">{% csrf_token %}
+                <input type="hidden" name="failCallerID" id="failCallerID">
+                <div class="modal-body">
+                    <div id="modalDialog"><p>You are about to mark from <span id="failCallerName"></span>  as failed to transcribe. Please give a reason below</p></div>
+                    <div class="form-group">
+                        <label class="control-label">Reason</label>
+                        <textarea placeholder="Reason for fail" class="form-control" name="reason_fail"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" type="submit">Mark as fail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for failedTranslation Modal for the listen button in failedTranslationList-->
+<div class="modal inmodal fade" id="listenFailedAudioModal" tabindex="-1" role="dialog" aria-labelledby="listenFailedAudioModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="listenFailedAudioModalLabel">Transaction Audio</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="unstyled">
+                    <li id="failAudio_1" class="hide"><audio id="failAudio_1_player" controls="controls" type="audio/wav"></audio></li>
+                    <li id="failAudio_2" class="hide"><audio id="failAudio_2_player" controls="controls" type="audio/wav"></audio></li>
+                    <li id="failAudio_3" class="hide"><audio id="failAudio_3_player" controls="controls" type="audio/wav"></audio></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal for Product add-->
+<div class="modal inmodal fade" id="addProductModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+            </div>
+
+            <form id="newProduct" class="form-horizontal">{% csrf_token %}
+                <div class="modal-body">
+                    <div class="newProductForm col-sm-6 b-r">
+                        <div class="form-group">
+                            <label class="control-label">Product Name</label>
+                            <input type="text" placeholder="Product Name" class="form-control" name="name" required="">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Alternative Name</label>
+                            <input type="text" placeholder="Alternative Name" class="form-control" name="altr_name">
+                            <span class="help-block m-b-none">Product Alternative Name</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Bangla Name</label>
+                            <input type="text" placeholder="Bangla Name" class="form-control" name="bangla_name">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Retail Unit Name</label>
+                            <input type="text" placeholder="Retail Name" class="form-control" name="retail_unit">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Bulk Unit Name</label>
+                            <input type="text" placeholder="Product Name" class="form-control" name="bulk_unit">
+                        </div>
+                    </div>
+                    <div class="newProductForm col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Price/unit (Retail)</label>
+                            <input type="number" placeholder="Price/unit (Retail)" class="form-control" name="retail_price">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Price/unit (Bulk)</label>
+                            <input type="number" placeholder="Price/unit (Bulk)" class="form-control" name="bulk_price">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Unit conversion multiplier</label>
+                            <input type="number" placeholder="Value" class="form-control" name="converter">
+                            <span class="help-block m-b-none">How many retails unit in a bulk unit?</span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success" type="submit">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Modal for Subscriber Adding-->
+<div class="modal inmodal fade" id="addSubscriberModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="subscriberAddRegLabel">Add Subscriber</h4>
+            </div>
+            <form role="form" action="/addsubscriber_info_outside/" method="post" id="newSubscriber">{% csrf_token %}
+                {% csrf_token %}
+                <input type="hidden" id="add_subscriber_intro_id" name="introduced_by">
+                <input type="hidden" id="add_subscriber_intro_name" name="add_subscriber_intro_name">
+                <input type="hidden" id="is_reg" name="is_reg">
+                <div class="modal-body">
+                    <div class="form-group hide" id="regAudioSection">
+                        <label for="record_id">Audio</label>
+                        <ul class="unstyled">
+                            <li><audio id="regAudio_player_1" controls="controls" type="audio/wav"></audio></li>
+                            <li><audio id="regAudio_player_2" controls="controls" type="audio/wav"></audio></li>
+                            <li><audio id="regAudio_player_3" controls="controls" type="audio/wav"></audio></li>
+                            <li><audio id="regAudio_player_4" controls="controls" type="audio/wav"></audio></li>
+                        </ul>
+                        <input type="hidden" name="record_id" id="record_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" class="form-control" name="name" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input class="form-control" id="address" type="text" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input class="form-control" id="phone" type="text" name="phone" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="form-control" id="email" type="email" name="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control m-b" name="gender" id="gender">
+                            <option>Not Defined</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input class="form-control" type="number" name="age" id="age">
+                    </div>
+                    <div class="form-group">
+                        <label for="married">Married</label>
+                        <select class="form-control m-b" name="married" id="married">
+                            <option>Don't Know</option>
+                            <option>Married</option>
+                            <option>Unmarried</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="child">Number of children</label>
+                        <input class="form-control" type="number" name="child" id="child">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Subscriber Type</label>
+                        <select class="form-control m-b" name="type" id="type">
+                            {% for type in types %}
+                            <option>{{ type.type_name }}</option>
+                            {% endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button class="btn btn-sm btn-primary" type="submit">Add Subscriber</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal for Transaction Info-->
+<div class="modal inmodal fade bs-example-modal-lg" id="transactionInfo" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="transactionInfoLabel">Transaction Details</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-mail">
+                            <tr>
+                                <td>Transaction ID: <span id="tdTid"></span></td>
+                                <td>Date: <span id="tdDate"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Shop: <span id="tdSubscriber"></span></td>
+                                <td>Total: <span id="tdTotal"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Consumer: <span id="tdConsumer"></span></td>
+                                <td>Paid: <span id="tdPaid"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Translated By: <span id="tdTranslator"></span></td>
+                                <td>Due: <span id="tdDue"></span></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="text-center">Products</h3>
+                        <table class="table table-bordered table-striped" id="transactionProductTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Sl.</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Unit Price</th>
+                                    <th class="text-center">Subtotal</th>
+                                </tr>
+                            </thead>
+                        </table>
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/transcription.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,281 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% block content %}
+    <!--dash board content starts from here-->
+    <div class="wrapper wrapper-content">
+        <!--Buttons for Other pages to redirect-->
+        <!--bar chart-->
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+        <div class="row white-bg">
+            <div class="col-lg-3">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">Monthly</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">D&P</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">Products</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <span>Report</span>
+                            <h3 class="font-bold">Sales</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+//      data for chart1- Number of Calls
+//      Transaction calls data vs registration call data
+            var data2A = [{{data_2}}],
+                    data3A = [{{data_3}}],
+                    datasetA = [
+                        {
+                            label: "Registration",
+                            data: data3A,
+                            color: "#1ab394",
+                            bars: {
+                                show: true,
+                                align: "left",
+                                barWidth: 24 * 60 * 60 * 600,
+                                lineWidth: 0
+                            }
+
+                        },{
+                            label: "Transaction Calls",
+                            data: data2A,
+                            color: "#222222",
+                            bars: {
+                                show: true,
+                                align: "right",
+                                barWidth: 24 * 60 * 60 * 600,
+                                lineWidth: 0
+                            }
+
+                        }
+                    ],
+                    maxVal = {{max}},
+                    optionsA = {
+                        xaxis: {
+                            mode: "time",
+                            tickSize: [3, "day"],
+                            tickLength: 0,
+                            axisLabel: "Date",
+                            axisLabelUseCanvas: true,
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: 'Arial',
+                            axisLabelPadding: 10,
+                            color: "#838383"
+                        },
+                        yaxes: [{
+                            position: "left",
+                            max: maxVal,
+                            color: "#838383",
+                            axisLabelUseCanvas: true,
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: 'Arial',
+                            axisLabelPadding: 3
+                        }, {
+                            position: "right",
+                            color: "#838383",
+                            axisLabelUseCanvas: true,
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: ' Arial',
+                            axisLabelPadding: 67
+                        }],
+                        legend: {
+                            noColumns: 1,
+                            labelBoxBorderColor: "#000000",
+                            position: "nw"
+                        },
+                        grid: {
+                            hoverable: true,
+                            borderWidth: 0,
+                            color: '#838383'
+                        }
+                    };
+
+            function gd(year, month, day) {
+                return new Date(year, month - 1, day).getTime();
+            }
+
+//        var previousPoint = null,
+//            previousLabel = null;
+
+//      chart1 - Number of calls- chart initiated
+            $.plot($("#flot-dashboard-chart"), datasetA, optionsA);
+
+            //data for chart2- Transaction Type
+            var data2B = [{{data_4}}],
+                    data3B = [{{data_5}}],
+                    data4B = [{{data_6}}],
+                    datasetB = [
+                        {
+                            label: "Sales",
+                            data: data3A,
+                            color: "#1ab394",
+                            bars: {
+                                show: true,
+                                align: "right",
+                                barWidth: 24 * 60 * 60 * 600,
+                                lineWidth: 0
+                            }
+
+                        }, {
+                            label: "Purchase",
+                            data: data4B,
+                            color: "#222222",
+                            bars: {
+                                show: true,
+                                align: "center",
+                                barWidth: 24 * 60 * 60 * 600,
+                                lineWidth: 0
+                            }
+
+                        }, {
+                            label: "Money Transaction",
+                            data: data2B,
+                            color: "#E82A2A",
+                            bars: {
+                                show: true,
+                                align: "right",
+                                barWidth: 24 * 60 * 60 * 600,
+                                lineWidth: 0
+                            }
+
+                        }
+                    ],
+                    maxValB ={{max_table_2}},
+                    optionsB = {
+                        xaxis: {
+                            mode: "time",
+                            tickSize: [3, "day"],
+                            tickLength: 0,
+                            axisLabel: "Date",
+                            axisLabelUseCanvas: true,
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: 'Arial',
+                            axisLabelPadding: 10,
+                            color: "#838383"
+                        },
+                        yaxes: [{
+                            position: "left",
+                            max: maxValB,
+                            color: "#838383",
+                            axisLabelUseCanvas: true,
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: 'Arial',
+                            axisLabelPadding: 3
+                        }, {
+                            position: "right",
+                            color: "#838383",
+                            axisLabelUseCanvas: true,
+                            axisLabelFontSizePixels: 12,
+                            axisLabelFontFamily: ' Arial',
+                            axisLabelPadding: 67
+                        }],
+                        legend: {
+                            noColumns: 1,
+                            labelBoxBorderColor: "#000000",
+                            position: "nw"
+                        },
+                        grid: {
+                            hoverable: true,
+                            borderWidth: 0,
+                            color: '#838383'
+                        }
+                    };
+
+            function gd(year, month, day) {
+                return new Date(year, month - 1, day).getTime();
+            }
+
+//        var previousPoint = null, previousLabel = null;
+
+//      chart2 - Transation Type- chart2 initiated
+            $.plot($("#flot-dashboard-chart2"), datasetB, optionsB);
+
+
+//      pie chart for Due sell table
+
+            var pieData = {{number_of_transactions_with_due}},
+                    pieData2 = {{number_of_transactions_without_due}},
+                    dataC = [{
+                        label: "With Due",
+                        data: pieData,
+                        color: "#d3d3d3",
+                    }, {
+                        label: "Without Due",
+                        data: pieData2,
+                        color: "#79d2c0",
+                    }];
+
+            var plotObj = $.plot($("#flot-pie-chart"), dataC, {
+                series: {
+                    pie: {
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true
+                },
+                tooltip: true,
+                tooltipOpts: {
+                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                    shifts: {
+                        x: 20,
+                        y: 0
+                    },
+                    defaultTheme: false
+                }
+            });
+        })
+    </script>
+{% endblock %}

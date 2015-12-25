@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1">
+<meta name="maintainer" content="admin@sense.ai" />
+{% block content %}
+
+{% endblock %}
+</vxml>

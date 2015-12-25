@@ -1,0 +1,12 @@
+reports done for Shop -->
+
+1. reports for dues & payment in -> report_due.html
+2. reports for monthly shop summary in -> report_monthly_shop.html | modal for year month selection is in base.html
+3. reports for products in -> report_product.html
+4. reports for sales analysis in -> report_sales_analysis.html
+
+
+
+add product for Shop -->
+
+1. product add form has been created in base.html page
