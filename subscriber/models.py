@@ -60,3 +60,12 @@ class TotalRecharge(models.Model):
 
     def __unicode__(self):
         return self.user
+
+
+class ACL(models.Model):
+    loginID = models.CharField(max_length=8)
+    loginUser = models.ForeignKey(Consumer, related_name='who_logging_in')
+    distUser = models.ForeignKey(Consumer, related_name='who_is_the_boss', null=True, blank=True)
+
+    def __unicode__(self):
+        return self.loginID

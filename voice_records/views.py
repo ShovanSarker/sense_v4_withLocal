@@ -122,7 +122,19 @@ def save_registration_voice(request):
         if get_data['level'] == '1':
             phone = get_data['session.callerid']
             caller_type = get_data['caller_type']
+            print('upto here')
+            print(get_data)
+            if 'session.calledid' in get_data:
+                calledNumber = get_data['session.calledid']
+                print(calledNumber[-4:])
+                if calledNumber[-4:] == '0010':
+                    phone = '880' + phone[-10:]
+                    print('bangladesh')
+                elif calledNumber[-4:] == '4436':
+                    print('singapore')
+                    phone = '65' + phone[-8:]
             tracking_id = phone[-4:]
+            print(phone)
             now = ''.join(x for x in str(datetime.datetime.now()) if x.isdigit())
             tracking_id += now[2:14]
             new_voice_reg = VoiceReg(caller=phone,

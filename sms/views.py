@@ -67,7 +67,7 @@ def get_sms(request):
             balance = BuyerSellerAccount.objects.get(seller=seller_object, buyer=buyer_object)
             balance.total_paid += amount
             remain_due = balance.total_due - amount
-            balance.total_due -= amount
+            balance.total_due = remain_due
             balance.last_paid_amount = amount
             balance.save()
         else:
