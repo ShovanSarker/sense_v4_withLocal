@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from IVR.views import incoming_call
+from IVR.views import incoming_call, incoming_call2
 from voice_records.views import save_record_voice, save_registration_voice, \
     voice_record_list, failed_voice_record_list, transcribed_voice_record_list,\
     completed_voice_record_list, completed_voice_record_list_transaction_id
@@ -58,6 +58,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^IVR/', view=incoming_call, name='home'),
+    url(r'^IVR2/', view=incoming_call2, name='home'),
     url(r'^saverecord/', view=save_record_voice, name='home'),
     url(r'^reg/', view=save_registration_voice, name='home'),
     url(r'^getsms/', view=get_sms, name='home'),

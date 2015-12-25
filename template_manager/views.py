@@ -64,6 +64,8 @@ def logout_now(request):
 @login_required(login_url='/login/')
 def home(request):
     transcriber_name = request.session['user']
+    print transcriber_name
+
     number_of_reg_calls = VoiceReg.objects.filter().count()
     number_of_transaction_calls = VoiceRecord.objects.filter().count()
     total = number_of_reg_calls + number_of_transaction_calls

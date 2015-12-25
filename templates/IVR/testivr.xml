@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
+    <form>
+        <record name="awaymessage" beep="true" maxtime="10s"
+                finalsilence="4s" dtmfterm="true">
+            <prompt>
+                At the tone, please record your message
+            </prompt>
+        </record>
+        <field name="confirm" type="boolean">
+            <prompt>
+                The message is <value expr="awaymessage"/>
+            </prompt>
+            <prompt>
+                To keep it, please say yes. To discard it, say no
+            </prompt>
+            <filled>
+                <if cond="comfirm">
+                    <submit next="save.php" method="post"
+                            namelist="awaymessage" />
+                </if>
+            </filled>
+        </field>
+    </form>
+</vxml>
