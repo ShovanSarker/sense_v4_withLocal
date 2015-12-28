@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from subscriber.models import Consumer, ConsumerType, Recharge, TotalRecharge
+from subscriber.models import Consumer, ConsumerType, Recharge, TotalRecharge, ACL
 from product.models import Product
 from voice_records.models import VoiceRecord, VoiceReg
 from sms.models import SMSPayment
@@ -29,12 +29,17 @@ def login_auth(request):
     print(postdata)
     if 'username' and 'password' in postdata:
         print(postdata['username'])
+        login_username = postdata['username']
         print(postdata['password'])
-        user = authenticate(username=postdata['username'], password=postdata['password'])
+        if ACL.objects.filter(loginID=postdata['username'][-9:]).exists():
+            login_username = login_username[-9:]
+        else:
+            login_username = login_username
+        user = authenticate(username=login_username, password=postdata['password'])
         if user is not None:
             if user.is_active:
                 login(request, user)
-                request.session['user'] = postdata['username']
+                request.session['user'] = login_username
                 if user.is_superuser:
                     res = redirect('/admin')
                 else:
@@ -64,111 +69,123 @@ def logout_now(request):
 @login_required(login_url='/login/')
 def home(request):
     transcriber_name = request.session['user']
-    print transcriber_name
-
-    number_of_reg_calls = VoiceReg.objects.filter().count()
-    number_of_transaction_calls = VoiceRecord.objects.filter().count()
-    total = number_of_reg_calls + number_of_transaction_calls
-    if total > 0:
-        reg_call_percentage = (number_of_reg_calls / float(total)) * 100
-        transaction_call_percentage = (number_of_transaction_calls / float(total)) * 100
+    print request.session['user']
+    if ACL.objects.filter(loginID=transcriber_name).exists():
+        login_user = ACL.objects.get(loginID=transcriber_name)
+        print(login_user.loginUser.name)
+        transcriber_name = login_user.loginUser.name
+        if login_user.loginUser.type.type_name == 'Distributor':
+            return render(request, 'pages/Distributor/index.html', {'transcriber_name': transcriber_name})
+        elif login_user.loginUser.type.type_name == 'SR':
+            return render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name})
+        elif login_user.loginUser.type.type_name == 'Seller':
+            return render(request, 'pages/Shop/index.html', {'transcriber_name': transcriber_name})
+        elif login_user.loginUser.type.type_name == 'SR':
+            return render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name})
     else:
-        transaction_call_percentage = 0
-        reg_call_percentage = 0
-    today_month = datetime.date.today().month
-    today_year = datetime.date.today().year
-    count = 1
-    data_2 = ''
-    data_3 = ''
-    data_4 = ''
-    data_5 = ''
-    data_6 = ''
-    max = 0
-    max_table_2 = 0
-    total_sell = VoiceRecord.objects.filter(purpose='sell').count()
-    total_buy = VoiceRecord.objects.filter(purpose='buy').count()
-    total_money_transaction = SMSPayment.objects.filter().count()
-    total_for_chart2 = number_of_reg_calls + number_of_transaction_calls
-    if total_for_chart2 > 0:
-        sell_percentage = (total_sell / float(total_for_chart2)) * 100
-        buy_percentage = (total_buy / float(total_for_chart2)) * 100
-        money_transaction_percentage = (total_money_transaction / float(total_for_chart2)) * 100
-    else:
-        sell_percentage = 0
-        buy_percentage = 0
-        money_transaction_percentage = 0
-    while count < 32:
-        total_call_that_day = VoiceRecord.objects.filter(DateAdded__month=today_month,
+        number_of_reg_calls = VoiceReg.objects.filter().count()
+        number_of_transaction_calls = VoiceRecord.objects.filter().count()
+        total = number_of_reg_calls + number_of_transaction_calls
+        if total > 0:
+            reg_call_percentage = (number_of_reg_calls / float(total)) * 100
+            transaction_call_percentage = (number_of_transaction_calls / float(total)) * 100
+        else:
+            transaction_call_percentage = 0
+            reg_call_percentage = 0
+        today_month = datetime.date.today().month
+        today_year = datetime.date.today().year
+        count = 1
+        data_2 = ''
+        data_3 = ''
+        data_4 = ''
+        data_5 = ''
+        data_6 = ''
+        max = 0
+        max_table_2 = 0
+        total_sell = VoiceRecord.objects.filter(purpose='sell').count()
+        total_buy = VoiceRecord.objects.filter(purpose='buy').count()
+        total_money_transaction = SMSPayment.objects.filter().count()
+        total_for_chart2 = number_of_reg_calls + number_of_transaction_calls
+        if total_for_chart2 > 0:
+            sell_percentage = (total_sell / float(total_for_chart2)) * 100
+            buy_percentage = (total_buy / float(total_for_chart2)) * 100
+            money_transaction_percentage = (total_money_transaction / float(total_for_chart2)) * 100
+        else:
+            sell_percentage = 0
+            buy_percentage = 0
+            money_transaction_percentage = 0
+        while count < 32:
+            total_call_that_day = VoiceRecord.objects.filter(DateAdded__month=today_month,
+                                                             DateAdded__year=today_year, DateAdded__day=count).count()
+            total_reg_that_day = VoiceReg.objects.filter(DateAdded__month=today_month,
                                                          DateAdded__year=today_year, DateAdded__day=count).count()
-        total_reg_that_day = VoiceReg.objects.filter(DateAdded__month=today_month,
-                                                     DateAdded__year=today_year, DateAdded__day=count).count()
-        if max < total_call_that_day:
-            max = total_call_that_day + 2
-        if max < total_reg_that_day:
-            max = total_reg_that_day + 2
+            if max < total_call_that_day:
+                max = total_call_that_day + 2
+            if max < total_reg_that_day:
+                max = total_reg_that_day + 2
 
-        data_2 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_call_that_day)
-        data_3 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_reg_that_day)
-        total_buy_that_day = VoiceRecord.objects.filter(DateAdded__month=today_month,
-                                                        DateAdded__year=today_year,
-                                                        DateAdded__day=count,
-                                                        purpose='buy').count()
-        total_sell_that_day = VoiceRecord.objects.filter(DateAdded__month=today_month,
-                                                         DateAdded__year=today_year,
-                                                         DateAdded__day=count,
-                                                         purpose='sell').count()
-        total_payment_that_day = SMSPayment.objects.filter(DateAdded__month=today_month,
-                                                           DateAdded__year=today_year,
-                                                           DateAdded__day=count).count()
-        if max_table_2 < total_buy_that_day:
-            max_table_2 = total_buy_that_day + 2
-        if max_table_2 < total_sell_that_day:
-            max_table_2 = total_sell_that_day + 2
-        if max_table_2 < total_payment_that_day:
-            max_table_2 = total_payment_that_day + 2
-        data_4 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_buy_that_day)
-        data_5 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_sell_that_day)
-        data_6 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_payment_that_day)
+            data_2 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_call_that_day)
+            data_3 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_reg_that_day)
+            total_buy_that_day = VoiceRecord.objects.filter(DateAdded__month=today_month,
+                                                            DateAdded__year=today_year,
+                                                            DateAdded__day=count,
+                                                            purpose='buy').count()
+            total_sell_that_day = VoiceRecord.objects.filter(DateAdded__month=today_month,
+                                                             DateAdded__year=today_year,
+                                                             DateAdded__day=count,
+                                                             purpose='sell').count()
+            total_payment_that_day = SMSPayment.objects.filter(DateAdded__month=today_month,
+                                                               DateAdded__year=today_year,
+                                                               DateAdded__day=count).count()
+            if max_table_2 < total_buy_that_day:
+                max_table_2 = total_buy_that_day + 2
+            if max_table_2 < total_sell_that_day:
+                max_table_2 = total_sell_that_day + 2
+            if max_table_2 < total_payment_that_day:
+                max_table_2 = total_payment_that_day + 2
+            data_4 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_buy_that_day)
+            data_5 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_sell_that_day)
+            data_6 += '[gd(%s, %s, %s), %s],' % (today_year, today_month, count, total_payment_that_day)
 
-        count += 1
-    data_2 = data_2[:-1]
-    data_3 = data_3[:-1]
-    data_4 = data_4[:-1]
-    data_5 = data_5[:-1]
-    data_6 = data_6[:-1]
-    number_of_transactions = Transaction.objects.filter().count()
-    number_of_transactions_with_due = Transaction.objects.filter(total_due__gt=0).count()
-    number_of_transactions_without_due = Transaction.objects.filter(total_due__lte=0).count()
-    shop_consumer = ConsumerType.objects.get(type_name='Seller')
-    all_shop_for_base = Consumer.objects.filter(type=shop_consumer)
-    all_user_for_base = Consumer.objects.all()
-    shop_consumer2 = ConsumerType.objects.get(type_name='Buyer')
-    all_consumer_for_base = Consumer.objects.filter(type=shop_consumer2)
-    print(all_consumer_for_base.count)
-    return render(request, 'pages/index.html', {'shop_list_base': all_shop_for_base,
-                                                'number_of_reg_calls': number_of_reg_calls,
-                                                'transcriber_name': transcriber_name,
-                                                'number_of_transaction_calls': number_of_transaction_calls,
-                                                'all_consumer_for_base' :all_consumer_for_base,
-                                                'reg_call_percentage': reg_call_percentage,
-                                                'transaction_call_percentage': transaction_call_percentage,
-                                                'data_2': data_2,
-                                                'data_3': data_3,
-                                                'data_4': data_4,
-                                                'data_5': data_5,
-                                                'data_6': data_6,
-                                                'max': max,
-                                                'number_of_transactions': number_of_transactions,
-                                                'number_of_transactions_with_due': number_of_transactions_with_due,
-                                                'number_of_transactions_without_due': number_of_transactions_without_due,
-                                                'max_table_2': max_table_2,
-                                                'total_sell': total_sell,
-                                                'total_buy': total_buy,
-                                                'total_money_transaction': total_money_transaction,
-                                                'sell_percentage': sell_percentage,
-                                                'buy_percentage': buy_percentage,
-                                                'money_transaction_percentage': money_transaction_percentage,
-                                                'all_user_for_base': all_user_for_base})
+            count += 1
+        data_2 = data_2[:-1]
+        data_3 = data_3[:-1]
+        data_4 = data_4[:-1]
+        data_5 = data_5[:-1]
+        data_6 = data_6[:-1]
+        number_of_transactions = Transaction.objects.filter().count()
+        number_of_transactions_with_due = Transaction.objects.filter(total_due__gt=0).count()
+        number_of_transactions_without_due = Transaction.objects.filter(total_due__lte=0).count()
+        shop_consumer = ConsumerType.objects.get(type_name='Seller')
+        all_shop_for_base = Consumer.objects.filter(type=shop_consumer)
+        all_user_for_base = Consumer.objects.all()
+        shop_consumer2 = ConsumerType.objects.get(type_name='Buyer')
+        all_consumer_for_base = Consumer.objects.filter(type=shop_consumer2)
+        print(all_consumer_for_base.count)
+        return render(request, 'pages/index.html', {'shop_list_base': all_shop_for_base,
+                                                    'number_of_reg_calls': number_of_reg_calls,
+                                                    'transcriber_name': transcriber_name,
+                                                    'number_of_transaction_calls': number_of_transaction_calls,
+                                                    'all_consumer_for_base' :all_consumer_for_base,
+                                                    'reg_call_percentage': reg_call_percentage,
+                                                    'transaction_call_percentage': transaction_call_percentage,
+                                                    'data_2': data_2,
+                                                    'data_3': data_3,
+                                                    'data_4': data_4,
+                                                    'data_5': data_5,
+                                                    'data_6': data_6,
+                                                    'max': max,
+                                                    'number_of_transactions': number_of_transactions,
+                                                    'number_of_transactions_with_due': number_of_transactions_with_due,
+                                                    'number_of_transactions_without_due': number_of_transactions_without_due,
+                                                    'max_table_2': max_table_2,
+                                                    'total_sell': total_sell,
+                                                    'total_buy': total_buy,
+                                                    'total_money_transaction': total_money_transaction,
+                                                    'sell_percentage': sell_percentage,
+                                                    'buy_percentage': buy_percentage,
+                                                    'money_transaction_percentage': money_transaction_percentage,
+                                                    'all_user_for_base': all_user_for_base})
 
 
 @login_required(login_url='/login/')
@@ -1436,6 +1453,29 @@ def report_transcriber_performance_print(request):
 
     return render(request, 'print/report_transcriber_performance.html',
                   {'all_product': all_product, 'add_notification': add_notification,
-                   'all_consumer_for_base' :all_consumer_for_base,
+                   'all_consumer_for_base':all_consumer_for_base,
                    'transcriber_name': transcriber_name,
                    'shop_list_base': all_shop_for_base, 'all_user_for_base': all_user_for_base})
+
+
+@login_required(login_url='/login/')
+def sr_monthly_report(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+    allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+
+    return render(request, 'pages/SR/report_monthly.html', {'transcriber_name': transcriber_name,
+                                                            'allTransaction': allTransaction})
+
+
+@login_required(login_url='/login/')
+def sr_due_report(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+    allBalance = BuyerSellerAccount.objects.filter(seller=sr_object)
+    transactionsWithPayment = Transaction.objects.filter(seller=sr_object,
+                                                         total_paid__gt=0)
+    return render(request, 'pages/SR/report_due.html', {'transcriber_name': transcriber_name,
+                                                        'allBalance': allBalance})

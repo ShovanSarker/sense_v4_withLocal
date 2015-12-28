@@ -63,7 +63,7 @@ class TotalRecharge(models.Model):
 
 
 class ACL(models.Model):
-    loginID = models.CharField(max_length=8)
+    loginID = models.CharField(max_length=9)
     loginUser = models.ForeignKey(Consumer, related_name='who_logging_in')
     distUser = models.ForeignKey(Consumer, related_name='who_is_the_boss', null=True, blank=True)
 

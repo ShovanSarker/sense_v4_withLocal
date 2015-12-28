@@ -73,7 +73,7 @@
                         <h3>Hishab Limited</h3>
                     </div>
                     <div class="logo-element">
-                        SE
+                        HL
                     </div>
                 </li>
                 <li class="active">
@@ -81,8 +81,8 @@
                 </li>
                 <li><a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#" role="button" data-toggle="modal" data-target="#monthlySummary">Monthly Sales Summary</a></li>
-                        <li><a href="/due_reports/" role="button">Dues & Payment</a></li>
+                        <li><a href="/SR/monthlyReport/" role="button">Summary</a></li>
+                        <li><a href="/SR/duePayments/" role="button">Dues & Payment</a></li>
                         <li><a href="/sales_analysis_report/" role="button">Sales Analysis</a></li>
                         <li><a href="#">Pre-Order</a></li>
                     </ul>
@@ -103,37 +103,6 @@
                 </ul>
             </nav>
         </div>
-
-        <!--modal for monthly sales summary-->
-        <div class="modal inmodal fade" id="monthlySummary" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Mothly Sales Summary</h4>
-                    </div>
-                    <form role="form" id="monthlySummaryForm" method="post" action="/monthly_shop_reports/">{% csrf_token %}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop">Year</label>
-                                <select class="form-control m-b" name="year">
-                                    <option>Year</option>
-                                </select>
-                                <label for="shop">Month</label>
-                                <select class="form-control m-b" name="month">
-                                    <option>Month</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
 
         {% block content %} {% endblock %}
         <div class="footer">

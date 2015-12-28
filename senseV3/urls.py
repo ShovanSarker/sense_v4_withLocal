@@ -42,7 +42,8 @@ from template_manager.views import login_page,\
     report_profit_print,\
     report_sales_analysis_print,\
     report_transcriber_performance_print,\
-    report_transcriber_performance_json, user_balance_recharge
+    report_transcriber_performance_json, user_balance_recharge, \
+    sr_monthly_report, sr_due_report
 from transcriber_management.views import add_transcriber
 from django.conf.urls.static import static
 from sms.views import send_sms_for_dues
@@ -119,14 +120,11 @@ urlpatterns = patterns('',
     url(r'^sales_analysis_report_print/', view=report_sales_analysis_print, name='home'),
     url(r'^profit_reports_print/', view=report_profit_print, name='home'),
     url(r'^report_transcriber_performance_print/', view=report_transcriber_performance_print, name='home'),
-    # json urls for reports
-    # url(r'^report_monthly_shop_json_print/', view=report_monthly_shop_json, name='home'),
-    # url(r'^report_product_json_print/', view=report_product_json, name='home'),
-    # url(r'^report_profit_json_print/', view=report_profit_json, name='home'),
-    # url(r'^report_sales_analysis_json_print/', view=report_sales_analysis_json, name='home'),
-    # url(r'^report_transcriber_performance_json_print/', view=report_transcriber_performance_json, name='home'),
-    # printing url ends
 
+
+    # SR section
+    url(r'^SR/monthlyReport', view=sr_monthly_report, name='home'),
+    url(r'^SR/duePayments', view=sr_due_report, name='home'),
 
 )
 

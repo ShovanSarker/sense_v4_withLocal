@@ -47,7 +47,7 @@ def add_subscriber(request):
                     address = ''
                     if 'address' in post_data:
                         address = post_data['address']
-                    subscriber_type = ConsumerType.objects.get(type_name__exact='Seller')
+                    subscriber_type = ConsumerType.objects.get(type_name__exact='SR')
                     if 'type' in post_data:
                         subscriber_type = ConsumerType.objects.get(type_name__exact=post_data['type'])
 
@@ -65,14 +65,23 @@ def add_subscriber(request):
                                             age=age,
                                             married=married)
                     new_consumer.save()
-                    print(phone[-6:])
+                    print(phone[-9:])
                     print(post_data['child'])
-                    user = User.objects.create_user(phone[-8:], phone[-8:]+'@sense.ai',
+                    user = User.objects.create_user(phone[-9:], phone[-9:]+'@sense.ai',
                                                     post_data['child'])
                     user.save()
-                    add_new_subscriber = ACL(loginUser=new_consumer,
-                                             loginID=phone[-8:])
-                    add_new_subscriber.save()
+                    transcriber_name = request.session['user']
+                    if ACL.objects.filter(loginID=transcriber_name).exists():
+                        login_user = ACL.objects.get(loginID=transcriber_name)
+                        if login_user.loginUser.type.type_name == 'Distributor':
+                            add_new_subscriber = ACL(loginUser=new_consumer,
+                                                     distUser=login_user.loginUser,
+                                                     loginID=phone[-9:])
+                            add_new_subscriber.save()
+                    else:
+                        add_new_subscriber = ACL(loginUser=new_consumer,
+                                                 loginID=phone[-9:])
+                        add_new_subscriber.save()
                     notification = 'Transcriber Successfully Added.'
                     # add_to_transcriber = Transcriber(name=post_data['username'])
                     # add_to_transcriber.save()
@@ -166,14 +175,14 @@ def add_subscriber_outside(request):
                                     age=age,
                                     married=married)
             new_consumer.save()
-            # print(phone[-6:])
-            # print(post_data['child'])
-            # user = User.objects.create_user(phone[-6:], phone[-6:]+'@sense.ai',
-            #                                 '000000'+post_data['child'])
-            # user.save()
-            # # notification = 'Transcriber Successfully Added.'
-            # add_to_transcriber = Transcriber(name=post_data['username'])
-            # add_to_transcriber.save()
+            print(phone[-9:])
+            print(post_data['child'])
+            user = User.objects.create_user(phone[-9:], phone[-9:]+'@sense.ai',
+                                            post_data['child'])
+            user.save()
+            add_new_subscriber = ACL(loginUser=new_consumer,
+                                     loginID=phone[-9:])
+            add_new_subscriber.save()
             welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
             if 'record_id' in post_data:
                 if not post_data['record_id'] == '':
