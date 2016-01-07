@@ -1289,9 +1289,6 @@ def report_monthly_shop_print(request):
         total_purchase += month_purchase.total_amount_of_transaction
         total_purchase_due += month_purchase.total_due
         total_purchase_paid += month_purchase.total_paid
-
-
-
     shop_consumer = ConsumerType.objects.get(type_name='Seller')
     all_shop_for_base = Consumer.objects.filter(type=shop_consumer)
     all_user_for_base = Consumer.objects.all()
@@ -1311,6 +1308,7 @@ def report_monthly_shop_print(request):
                                                               'total_purchase_due': total_purchase_due,
                                                               'total_purchase_paid': total_purchase_paid,
                                                               'all_user_for_base': all_user_for_base})
+
 
 @login_required(login_url='/login/')
 def report_due_print(request):
@@ -1342,6 +1340,7 @@ def report_due_print(request):
                                                      'transcriber_name': transcriber_name,
                                                      'shop_name': shop_name,
                                                      'all_user_for_base': all_user_for_base})
+
 
 @login_required(login_url='/login/')
 def report_payment_print(request):
@@ -1375,6 +1374,7 @@ def report_payment_print(request):
                                                          'bangla': bangla,
                                                          'all_user_for_base': all_user_for_base})
 
+
 @login_required(login_url='/login/')
 def report_product_print(request):
 
@@ -1406,6 +1406,7 @@ def report_product_print(request):
                                                          'selected_products': selected_products,
                                                          'all_user_for_base': all_user_for_base})
 
+
 @login_required(login_url='/login/')
 def report_sales_analysis_print(request):
     get_data = request.GET
@@ -1423,6 +1424,7 @@ def report_sales_analysis_print(request):
                                                                 'transcriber_name': transcriber_name,
                                                                 'all_user_for_base': all_user_for_base})
 
+
 @login_required(login_url='/login/')
 def report_profit_print(request):
     get_data = request.GET
@@ -1436,9 +1438,10 @@ def report_profit_print(request):
 
     return render(request, 'print/report_profit.html', {'shop_list_base': all_shop_for_base,
                                                         'shop_name': shop_name,
-                                                        'all_consumer_for_base' :all_consumer_for_base,
+                                                        'all_consumer_for_base':all_consumer_for_base,
                                                         'transcriber_name': transcriber_name,
                                                         'all_user_for_base': all_user_for_base})
+
 
 @login_required(login_url='/login/')
 def report_transcriber_performance_print(request):
