@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from local_lib.v3 import is_number, is_float, send_sms
 from subscriber.models import Consumer, ConsumerType
-from transaction.models import BuyerSellerAccount, Transaction, ProductsInTransaction
+from transaction.models import BuyerSellerAccount, Transaction, ProductsInTransaction, dueTransaction
 from .models import SMSPayment
 import datetime
 # Create your views here.
@@ -65,6 +65,7 @@ def get_sms(request):
                 seller_object = other_party_object
         if BuyerSellerAccount.objects.filter(seller=seller_object, buyer=buyer_object).exists():
             balance = BuyerSellerAccount.objects.get(seller=seller_object, buyer=buyer_object)
+            # previousDue = balance.total_due
             balance.total_paid += amount
             remain_due = balance.total_due - amount
             balance.total_due = remain_due
@@ -72,6 +73,7 @@ def get_sms(request):
             balance.save()
         else:
             remain_due = 0
+            # previousDue = 0
             balance = BuyerSellerAccount(seller=seller_object,
                                          buyer=buyer_object,
                                          total_amount_of_transaction=0,
@@ -83,12 +85,13 @@ def get_sms(request):
                                      seller=seller_object,
                                      amount=amount)
         new_sms_payment.save()
-        # transaction = Transaction(seller=seller_object,
-        #                               buyer=buyer_object,
-        #                               total_amount=0,
-        #                               total_paid=amount,
-        #                               total_due=0)
-        # transaction.save()
+
+        transaction = dueTransaction(seller=seller_object,
+                                     buyer=buyer_object,
+                                     total_amount=0,
+                                     total_paid=amount,
+                                     total_due=0)
+        transaction.save()
         sms_text = 'You have received taka %s from %s. The remaining due amount is taka %s. Thanks for shopping with Hishab Limited.' %(format(amount,'.2f'), buyer_object.name, format(remain_due, '.2f'))
         send_sms(sms_text, seller_object.phone)
         sms_text = 'You have paid taka %s due to %s. The remaining due amount is taka %s. Thanks for shopping with Hishab Limited.' %(format(amount,'.2f'), seller_object.name, format(remain_due, '.2f'))

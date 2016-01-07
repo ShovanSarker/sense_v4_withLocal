@@ -21,11 +21,23 @@ class BuyerSellerAccount(models.Model):
 
 
 class Transaction(models.Model):
-    callID = models.ForeignKey(VoiceRecord, related_name='transaction_which_call')
+    callID = models.ForeignKey(VoiceRecord, related_name='transaction_which_call', null=True, blank=True)
     seller = models.ForeignKey(Consumer, related_name='seller_transaction')
     buyer = models.ForeignKey(Consumer, related_name='buyer_transaction')
     total_amount = models.FloatField()
-    transcriber = models.ForeignKey(Transcriber, related_name='who_did_this_transaction')
+    transcriber = models.ForeignKey(Transcriber, related_name='who_did_this_transaction', null=True, blank=True)
+    total_paid = models.FloatField()
+    total_due = models.FloatField()
+    DateAdded = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.id
+
+
+class dueTransaction(models.Model):
+    seller = models.ForeignKey(Consumer, related_name='seller_due_transaction')
+    buyer = models.ForeignKey(Consumer, related_name='buyer_due_transaction')
+    total_amount = models.FloatField()
     total_paid = models.FloatField()
     total_due = models.FloatField()
     DateAdded = models.DateTimeField(auto_now=False, auto_now_add=True)
