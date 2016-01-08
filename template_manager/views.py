@@ -1488,6 +1488,7 @@ def sr_due_report(request):
                                                         'dueTransactions': dueTransactions,
                                                         'allBalance': allBalance})
 
+
 @login_required(login_url='/login/')
 def sr_report_sales_analysis(request):
     sr_name = request.session['user']
@@ -1556,8 +1557,7 @@ def sr_report_sales_analysis_json(request):
         rank = 1
         for a_product in Product.objects.all():
             count = 0
-
-            product_price = 0
+            # product_price = 0
             previous_product_price = 0
             change = 0
             product_name = a_product.name
@@ -1578,7 +1578,7 @@ def sr_report_sales_analysis_json(request):
 
         print(this_month)
         day = 1
-
+        #
         # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
         while day < 32:
             day_string = True
@@ -1683,3 +1683,40 @@ def sr_report_sales_analysis_json(request):
     output = output[:-1]
     output += ']}'
     return HttpResponse(output, content_type="text/plain")
+
+
+# Distributor Section
+
+@login_required(login_url='/login/')
+def add_sr_page(request):
+    dr_name = request.session['user']
+    dr_object = ACL.objects.get(loginID=dr_name).loginUser
+    transcriber_name = dr_object.name
+
+    all_subscriber = Consumer.objects.all()
+    type_of_subscriber = ConsumerType.objects.all()
+    add_notification = False
+    # shop_consumer = ConsumerType.objects.get(type_name='Seller')
+    # all_shop_for_base = Consumer.objects.filter(type=shop_consumer)
+    # all_user_for_base = Consumer.objects.all()
+    # transcriber_name = request.session['user']
+    # shop_consumer2 = ConsumerType.objects.get(type_name='Buyer')
+    # all_consumer_for_base = Consumer.objects.filter(type=shop_consumer2)
+    notification = ''
+    if 'delete' in request.GET:
+        get_data = request.GET
+        add_notification = True
+        delID = get_data['delete']
+        if Consumer.objects.filter(id=delID).exists():
+            item_for_delete = Consumer.objects.get(id=delID)
+            notification = 'The Consumer : ' + item_for_delete.name + ' is deleted successfully.'
+            item_for_delete.delete()
+        else:
+            notification = 'Item not found'
+
+    return render(request, 'pages/add_subscriber.html',
+                  {'subscribers': all_subscriber, 'types': type_of_subscriber, 'add_notification': add_notification,
+                   # 'shop_list_base': all_shop_for_base,
+                   # 'all_consumer_for_base' :all_consumer_for_base,
+                   'transcriber_name': transcriber_name,
+                   'notification':notification})
