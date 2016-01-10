@@ -1,8 +1,7 @@
-<!--charts not included-->
 {% extends "pages/base.html" %}
 {% load static %}
 {% block content %}
-<!--Due Summary for shops content-->
+
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-9">
         <h2>Product Report</h2>
@@ -21,7 +20,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>বর্তমান গুদাম (pre orders)</h5>
+                    <h5>বর্তমান গুদাম(Pre orders)</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -40,14 +39,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for product in  shop_inventory%}
                         <tr class="gradeC">
-                            <td>{{product.product.name}}</td>
-                            <td>{{product.left}}</td>
-                            <td>{{product.unit}}</td>
-                            <td>{{product.DateAdded}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                        {% endfor%}
                         </tbody>
                     </table>
                 </div>
@@ -82,14 +79,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for product in  shop_inventory%}
                         <tr class="gradeC">
-                            <td>{{product.product.name}}</td>
-                            <td>{{product.left}}</td>
-                            <td>{{product.unit}}</td>
-                            <td>{{product.DateAdded}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                        {% endfor%}
                         </tbody>
                     </table>
                 </div>

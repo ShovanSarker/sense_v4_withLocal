@@ -1693,8 +1693,8 @@ def add_sr_page(request):
     dr_object = ACL.objects.get(loginID=dr_name).loginUser
     transcriber_name = dr_object.name
 
-    all_subscriber = Consumer.objects.all()
-    type_of_subscriber = ConsumerType.objects.all()
+    all_subscriber = ACL.objects.filter(distUser=dr_object)
+    # type_of_subscriber = ConsumerType.objects.all()
     add_notification = False
     # shop_consumer = ConsumerType.objects.get(type_name='Seller')
     # all_shop_for_base = Consumer.objects.filter(type=shop_consumer)
@@ -1714,8 +1714,8 @@ def add_sr_page(request):
         else:
             notification = 'Item not found'
 
-    return render(request, 'pages/add_subscriber.html',
-                  {'subscribers': all_subscriber, 'types': type_of_subscriber, 'add_notification': add_notification,
+    return render(request, 'pages/Distributor/add_sr.html',
+                  {'subscribers': all_subscriber,'add_notification': add_notification,
                    # 'shop_list_base': all_shop_for_base,
                    # 'all_consumer_for_base' :all_consumer_for_base,
                    'transcriber_name': transcriber_name,
