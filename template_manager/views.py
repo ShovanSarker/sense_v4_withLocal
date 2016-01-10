@@ -1719,4 +1719,236 @@ def add_sr_page(request):
                    # 'shop_list_base': all_shop_for_base,
                    # 'all_consumer_for_base' :all_consumer_for_base,
                    'transcriber_name': transcriber_name,
-                   'notification':notification})
+                   'notification': notification})
+
+
+@login_required(login_url='/login/')
+def dr_monthly_report(request):
+    dr_name = request.session['user']
+    dr_object = ACL.objects.get(loginID=dr_name).loginUser
+    transcriber_name = dr_object.name
+    all_subscriber = ACL.objects.filter(distUser=dr_object)
+    post_data = request.POST
+    if 'sr' in post_data:
+        sr_object = Consumer.objects.get(id=post_data['sr'])
+        allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+        return render(request, 'pages/Distributor/report_monthly.html', {'transcriber_name': transcriber_name,
+                                                                         'hasReport': True,
+                                                                         'subscribers': all_subscriber,
+                                                                         'allTransaction': allTransaction})
+    else:
+        # allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+        return render(request, 'pages/Distributor/report_monthly.html', {'transcriber_name': transcriber_name,
+                                                                         'subscribers': all_subscriber,
+                                                                         'hasReport': False})
+
+
+@login_required(login_url='/login/')
+def sr_due_report(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+    allBalance = BuyerSellerAccount.objects.filter(seller=sr_object)
+    sell_transaction = Transaction.objects.filter(seller=sr_object)
+    dueTransactions = dueTransaction.objects.filter(seller=sr_object)
+
+    return render(request, 'pages/SR/report_due.html', {'transcriber_name': transcriber_name,
+                                                        'sell_transaction': sell_transaction,
+                                                        'dueTransactions': dueTransactions,
+                                                        'allBalance': allBalance})
+
+
+@login_required(login_url='/login/')
+def sr_report_sales_analysis(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+
+    post_data = request.POST
+    print(post_data)
+    shop_object = sr_object
+    shop_name = shop_object.name
+    shop_id = shop_object.id
+    if 'month' in post_data and 'year' in post_data:
+        month = post_data['month']
+        year = post_data['year']
+    else:
+        month = datetime.date.today().month
+        year = datetime.date.today().year
+    return render(request, 'pages/SR/report_sales_analysis.html', {'shop_name': shop_name,
+                                                                   # 'all_consumer_for_base' :all_consumer_for_base,
+                                                                   'shop_id': shop_id,
+                                                                   # 'bangla': bangla,
+                                                                   'transcriber_name': transcriber_name,
+                                                                   'month': month,
+                                                                   'year': year})
+
+
+@login_required(login_url='/login/')
+def sr_report_sales_analysis_json(request):
+    get_data = request.GET
+    shop_name = get_data['shop']
+    shop_object = Consumer.objects.get(id=shop_name)
+
+    shop_inventory = BuySellProfitInventoryIndividual.objects.filter(shop=shop_object)
+    shop_consumer = ConsumerType.objects.get(type_name='Seller')
+    this_year = get_data['year']
+    print(this_year)
+    this_month = get_data['month']
+    output = '{"data": [ '
+
+    if get_data['t'] == '1':
+        rank = 1
+        for a_product in Product.objects.all():
+            count = 0
+            product_price = 0
+            product_name = a_product.name
+            for this_day_transaction in Transaction.objects.filter(seller=shop_object, DateAdded__year=this_year,
+                                                                   DateAdded__month=this_month):
+                # start counting for this product
+                for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
+                    if product_in_this_transaction.product == a_product:
+                        if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
+                            if a_product.bulk_to_retail_unit == 0:
+                                count = count + product_in_this_transaction.quantity
+                                product_price = product_price + product_in_this_transaction.price_per_unit
+                            else:
+                                count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
+                                product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
+                        else:
+                            count = count + product_in_this_transaction.quantity
+                            product_price = product_price + product_in_this_transaction.price_per_unit
+
+            if count > 0:
+                output += '["%s","%s","%s"] ,' % (rank, product_name, str(count) + ' ' + a_product.retail_unit)
+                rank += 1
+    if get_data['t'] == '2':
+        rank = 1
+        for a_product in Product.objects.all():
+            count = 0
+            # product_price = 0
+            previous_product_price = 0
+            change = 0
+            product_name = a_product.name
+            for this_day_transaction in Transaction.objects.filter(seller=shop_object):
+                # start counting for this product
+                for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
+                    if product_in_this_transaction.product == a_product:
+                        if count == 0:
+                            previous_product_price = product_in_this_transaction.price_per_unit
+                        product_price = product_in_this_transaction.price_per_unit
+                        change += abs(previous_product_price - product_price)
+                        count += 1
+            if count > 0:
+                output += '["%s","%s","%s","%s"] ,' % (rank, product_name, count,
+                                                       change/count)
+                rank += 1
+    if get_data['t'] == '3':
+
+        print(this_month)
+        day = 1
+        #
+        # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
+        while day < 32:
+            day_string = True
+            rank = 1
+            for a_product in Product.objects.all():
+                count = 0
+                product_price = 0
+                product_name = a_product.name
+
+                for this_day_transaction in Transaction.objects.filter(seller=shop_object, DateAdded__year=this_year,
+                                                                       DateAdded__month=this_month, DateAdded__day=day):
+                    # start counting for this product
+
+                    for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
+
+                        if product_in_this_transaction.product == a_product:
+                            if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
+                                if a_product.bulk_to_retail_unit == 0:
+                                    count = count + product_in_this_transaction.quantity
+                                    product_price = product_price + product_in_this_transaction.price_per_unit
+                                else:
+                                    count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
+                                    product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
+                            else:
+                                count = count + product_in_this_transaction.quantity
+                                product_price = product_price + product_in_this_transaction.price_per_unit
+
+                if count > 0:
+                    if day_string:
+                        output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
+                        day_string = False
+                    output += '["","%s","%s","%s","%s"] ,' % (rank, product_name,
+                                                              str(count) + ' ' + a_product.retail_unit,
+                                                              float(product_price / count))
+                    rank += 1
+            day += 1
+            # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
+    if get_data['t'] == '4':
+        day = 1
+
+        # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
+        while day < 8:
+            day_string = True
+            rank = 1
+            for a_product in Product.objects.all():
+                count = 0
+                product_price = 0
+                product_name = a_product.name
+
+                for this_day_transaction in Transaction.objects.filter(seller=shop_object, DateAdded__week_day=day):
+                    # start counting for this product
+
+                    for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
+
+                        if product_in_this_transaction.product == a_product:
+                            if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
+                                if a_product.bulk_to_retail_unit == 0:
+                                    count = count + product_in_this_transaction.quantity
+                                    product_price = product_price + product_in_this_transaction.price_per_unit
+                                else:
+                                    count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
+                                    product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
+                            else:
+                                count = count + product_in_this_transaction.quantity
+                                product_price = product_price + product_in_this_transaction.price_per_unit
+
+                if count > 0:
+                    if day_string:
+                        if day == 1:
+                            output += '["%s","","","",""] ,' % 'Sunday'
+                        elif day == 2:
+                            output += '["%s","","","",""] ,' % 'Monday'
+                        elif day == 3:
+                            output += '["%s","","","",""] ,' % 'Tuesday'
+                        elif day == 4:
+                            output += '["%s","","","",""] ,' % 'Wednesday'
+                        elif day == 5:
+                            output += '["%s","","","",""] ,' % 'Thursday'
+                        elif day == 6:
+                            output += '["%s","","","",""] ,' % 'Friday'
+                        elif day == 7:
+                            output += '["%s","","","",""] ,' % 'Saturday'
+                        day_string = False
+                    output += '["","%s","%s","%s","%s"] ,' % (rank, product_name,
+                                                              str(count) + ' ' + a_product.retail_unit,
+                                                              float(product_price / count))
+                    rank += 1
+            day += 1
+    if get_data['t'] == '5':
+        this_year = datetime.date.today().year
+        day_string = True
+        for a_product in Product.objects.all():
+            count = 0
+            product_profit = 0
+            product_name = a_product.name
+            for this_day_transaction in BuySellProfitInventoryIndividual.objects.filter(shop_id=shop_object):
+                # start counting for this product
+                if this_day_transaction.product == a_product:
+                    product_profit += this_day_transaction.profit
+                    count += 1
+            output += '["%s","%s"] ,' % (product_name, product_profit)
+    output = output[:-1]
+    output += ']}'
+    return HttpResponse(output, content_type="text/plain")

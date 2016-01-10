@@ -43,7 +43,8 @@ from template_manager.views import login_page,\
     report_sales_analysis_print,\
     report_transcriber_performance_print,\
     report_transcriber_performance_json, user_balance_recharge, \
-    sr_monthly_report, sr_due_report, sr_report_sales_analysis, sr_report_sales_analysis_json, add_sr_page
+    sr_monthly_report, sr_due_report, sr_report_sales_analysis, \
+    sr_report_sales_analysis_json, add_sr_page, dr_monthly_report
 from transcriber_management.views import add_transcriber
 from django.conf.urls.static import static
 from sms.views import send_sms_for_dues
@@ -130,6 +131,7 @@ urlpatterns = patterns('',
 
     # Distributor section
     url(r'^DIST/add_SR/', view=add_sr_page, name='home'),
+    url(r'^DIST/monthlyReport', view=dr_monthly_report, name='home'),
 
 )
 
