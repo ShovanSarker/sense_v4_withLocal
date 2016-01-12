@@ -44,7 +44,8 @@ from template_manager.views import login_page,\
     report_transcriber_performance_print,\
     report_transcriber_performance_json, user_balance_recharge, \
     sr_monthly_report, sr_due_report, sr_report_sales_analysis, \
-    sr_report_sales_analysis_json, add_sr_page, dr_monthly_report
+    sr_report_sales_analysis_json, add_sr_page, dr_monthly_report, dr_due_report, dr_report_sales_analysis, \
+    shop_due_report, shop_monthly_report, shop_report_sales_analysis, user_due_report, user_monthly_report
 from transcriber_management.views import add_transcriber
 from django.conf.urls.static import static
 from sms.views import send_sms_for_dues
@@ -132,7 +133,17 @@ urlpatterns = patterns('',
     # Distributor section
     url(r'^DIST/add_SR/', view=add_sr_page, name='home'),
     url(r'^DIST/monthlyReport', view=dr_monthly_report, name='home'),
+    url(r'^DIST/duePayments', view=dr_due_report, name='home'),
+    url(r'^DIST/sales_analysis_report', view=dr_report_sales_analysis, name='home'),
 
+    # Shop section
+    url(r'^Shop/monthlyReport', view=shop_monthly_report, name='home'),
+    url(r'^Shop/duePayments', view=shop_due_report, name='home'),
+    url(r'^Shop/sales_analysis_report', view=shop_report_sales_analysis, name='home'),
+
+    # Consumer section
+    url(r'^User/monthlyReport', view=user_monthly_report, name='home'),
+    url(r'^User/duePayments', view=user_due_report, name='home')
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

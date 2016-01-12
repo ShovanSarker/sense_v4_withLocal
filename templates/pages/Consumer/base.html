@@ -73,30 +73,19 @@
                         <h3>Hishab Limited</h3>
                     </div>
                     <div class="logo-element">
-                        SE
+                        HL
                     </div>
                 </li>
                 <li class="active">
                     <a href="/"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span></a>
                 </li>
-                <li>
-                    <a href="#"><i class="fa fa-plus-square"></i> <span class="nav-label">Add</span><span class="fa arrow"></span></a>
+                <li><a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#" role="button" data-toggle="modal" data-target="#addProductForm">Product</a></li>
-
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Reports For Consumers</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="#" role="button" data-toggle="modal" data-target="#productwise">Productwise Dues & Payemnt</a></li>
-                        <li><a href="#" role="button" data-toggle="modal" data-target="#shopwise">Shopwise Dues & Payment</a></li>
-                        <li><a href="#" role="button" data-toggle="modal" data-target="#datewise">Datewise Dues & Payment</a></li>
+                        <li><a href="/User/monthlyReport/" role="button">Summary</a></li>
+                        <li><a href="/User/duePayments/" role="button">Dues & Payment</a></li>
                     </ul>
                 </li>
             </ul>
-
         </div>
     </nav>
 
@@ -112,101 +101,6 @@
                 </ul>
             </nav>
         </div>
-
-
-        <!--modal for productwise dues & payment-->
-        <div class="modal inmodal fade" id="productwise" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Productwise Dues & Payment</h4>
-                    </div>
-                    <form role="form" id="productwiseForm" method="post" action="#">{% csrf_token %}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop">Select Product</label>
-                                <select class="form-control m-b" name="product">
-                                    <option>Product list</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!--modal for shopwise dues & payment-->
-        <div class="modal inmodal fade" id="shopwise" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Shopwise Dues & Payment</h4>
-                    </div>
-                    <form role="form" id="shopwiseForm" method="post" action="#">{% csrf_token %}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop">Select Shop</label>
-                                <select class="form-control m-b" name="shop">
-                                    <option>Shop list</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!--modal for datewise dues & payment-->
-        <div class="modal inmodal fade" id="datewise" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Datewise Dues & Payment</h4>
-                    </div>
-                    <form role="form" id="datewiseForm" method="post" action="#">{% csrf_token %}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="shop">Year</label>
-                                <select class="form-control m-b" name="year">
-                                    <option>Year</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="shop">Month</label>
-                                <select class="form-control m-b" name="month">
-                                    <option>Month</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="shop">Date</label>
-                                <select class="form-control m-b" name="date">
-                                    <option>Date</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!--modal for Add Product-->
-
-
 
         {% block content %} {% endblock %}
         <div class="footer">

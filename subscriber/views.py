@@ -28,8 +28,8 @@ def add_subscriber(request):
                 else:
                     child = 0
                     if 'child' in post_data:
-                        if is_number(post_data['child']):
-                            child = int(post_data['child'])
+
+                        child = post_data['child']
                     gender = 'None'
                     if 'gender' in post_data:
                         if not post_data['gender'] == 'Not Defined':
@@ -139,8 +139,7 @@ def add_subscriber_outside(request):
         else:
             child = 0
             if 'child' in post_data:
-                if is_number(post_data['child']):
-                    child = int(post_data['child'])
+               child = post_data['child']
             gender = 'None'
             if 'gender' in post_data:
                 if not post_data['gender'] == 'Not Defined':

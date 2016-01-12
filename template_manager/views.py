@@ -80,8 +80,8 @@ def home(request):
             return render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name})
         elif login_user.loginUser.type.type_name == 'Seller':
             return render(request, 'pages/Shop/index.html', {'transcriber_name': transcriber_name})
-        elif login_user.loginUser.type.type_name == 'SR':
-            return render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name})
+        elif login_user.loginUser.type.type_name == 'Buyer':
+            return render(request, 'pages/Consumer/index.html', {'transcriber_name': transcriber_name})
     else:
         number_of_reg_calls = VoiceReg.objects.filter().count()
         number_of_transaction_calls = VoiceRecord.objects.filter().count()
@@ -1744,22 +1744,109 @@ def dr_monthly_report(request):
 
 
 @login_required(login_url='/login/')
-def sr_due_report(request):
+def dr_due_report(request):
+    sr_name = request.session['user']
+    dr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = dr_object.name
+    all_subscriber = ACL.objects.filter(distUser=dr_object)
+    post_data = request.POST
+    if 'sr' in post_data:
+        sr_object = Consumer.objects.get(id=post_data['sr'])
+        allBalance = BuyerSellerAccount.objects.filter(seller=sr_object)
+        sell_transaction = Transaction.objects.filter(seller=sr_object)
+        dueTransactions = dueTransaction.objects.filter(seller=sr_object)
+        # allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+        return render(request, 'pages/Distributor/report_due.html', {'transcriber_name': transcriber_name,
+                                                                     'sell_transaction': sell_transaction,
+                                                                     'dueTransactions': dueTransactions,
+                                                                     'hasReport': True,
+                                                                     'subscribers': all_subscriber,
+                                                                     'allBalance': allBalance})
+
+    else:
+        # allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+        return render(request, 'pages/Distributor/report_due.html', {'transcriber_name': transcriber_name,
+                                                                     'subscribers': all_subscriber,
+                                                                     'hasReport': False})
+
+
+
+@login_required(login_url='/login/')
+def dr_report_sales_analysis(request):
+    dr_name = request.session['user']
+    dr_object = ACL.objects.get(loginID=dr_name).loginUser
+    transcriber_name = dr_object.name
+    post_data = request.POST
+    print(post_data)
+    # shop_object = sr_object
+    #
+    all_subscriber = ACL.objects.filter(distUser=dr_object)
+    hasReport = False
+    if 'sr' in post_data:
+        shop_id = post_data['sr']
+        shop_name = Consumer.objects.get(id=shop_id).name
+        hasReport = True
+        if 'month' in post_data and 'year' in post_data:
+            month = post_data['month']
+            year = post_data['year']
+        else:
+            month = datetime.date.today().month
+            year = datetime.date.today().year
+        return render(request, 'pages/Distributor/report_sales_analysis.html', {'shop_name': shop_name,
+                                                                                # 'all_consumer_for_base' :all_consumer_for_base,
+                                                                                'shop_id': shop_id,
+                                                                                'subscribers': all_subscriber,
+                                                                                'transcriber_name': transcriber_name,
+                                                                                'month': month,
+                                                                                'hasReport': hasReport,
+                                                                                'year': year})
+    else:
+        return render(request, 'pages/Distributor/report_sales_analysis.html', {'shop_name': 'Not Selected',
+                                                                                # 'all_consumer_for_base' :all_consumer_for_base,
+                                                                                'subscribers': all_subscriber,
+                                                                                # 'bangla': bangla,
+                                                                                'transcriber_name': transcriber_name,
+                                                                                # 'month': month,
+                                                                                'hasReport': hasReport})
+
+
+# Shop Module
+
+@login_required(login_url='/login/')
+def shop_monthly_report(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+    allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+    allTransactionIn = BuyerSellerAccount.objects.filter(buyer=sr_object)
+
+    return render(request, 'pages/Shop/report_monthly.html', {'transcriber_name': transcriber_name,
+                                                              'allTransactionIn': allTransactionIn,
+                                                              'allTransaction': allTransaction})
+
+
+@login_required(login_url='/login/')
+def shop_due_report(request):
     sr_name = request.session['user']
     sr_object = ACL.objects.get(loginID=sr_name).loginUser
     transcriber_name = sr_object.name
     allBalance = BuyerSellerAccount.objects.filter(seller=sr_object)
     sell_transaction = Transaction.objects.filter(seller=sr_object)
     dueTransactions = dueTransaction.objects.filter(seller=sr_object)
+    allBalanceIn = BuyerSellerAccount.objects.filter(buyer=sr_object)
+    sell_transactionIn = Transaction.objects.filter(buyer=sr_object)
+    dueTransactionsIn = dueTransaction.objects.filter(buyer=sr_object)
 
-    return render(request, 'pages/SR/report_due.html', {'transcriber_name': transcriber_name,
-                                                        'sell_transaction': sell_transaction,
-                                                        'dueTransactions': dueTransactions,
-                                                        'allBalance': allBalance})
-
+    return render(request, 'pages/Shop/report_due.html', {'transcriber_name': transcriber_name,
+                                                          'sell_transaction': sell_transaction,
+                                                          'dueTransactions': dueTransactions,
+                                                          'allBalance': allBalance,
+                                                          'sell_transactionIn': sell_transactionIn,
+                                                          'dueTransactionsIn': dueTransactionsIn,
+                                                          'allBalanceIn': allBalanceIn})
 
 @login_required(login_url='/login/')
-def sr_report_sales_analysis(request):
+def shop_report_sales_analysis(request):
     sr_name = request.session['user']
     sr_object = ACL.objects.get(loginID=sr_name).loginUser
     transcriber_name = sr_object.name
@@ -1775,180 +1862,44 @@ def sr_report_sales_analysis(request):
     else:
         month = datetime.date.today().month
         year = datetime.date.today().year
-    return render(request, 'pages/SR/report_sales_analysis.html', {'shop_name': shop_name,
-                                                                   # 'all_consumer_for_base' :all_consumer_for_base,
-                                                                   'shop_id': shop_id,
-                                                                   # 'bangla': bangla,
-                                                                   'transcriber_name': transcriber_name,
-                                                                   'month': month,
-                                                                   'year': year})
+    return render(request, 'pages/Shop/report_sales_analysis.html', {'shop_name': shop_name,
+                                                                     # 'all_consumer_for_base' :all_consumer_for_base,
+                                                                     'shop_id': shop_id,
+                                                                     # 'bangla': bangla,
+                                                                     'transcriber_name': transcriber_name,
+                                                                     'month': month,
+                                                                     'year': year})
+
+# Consumer Module
+
+@login_required(login_url='/login/')
+def user_monthly_report(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+    # allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
+    allTransactionIn = BuyerSellerAccount.objects.filter(buyer=sr_object)
+
+    return render(request, 'pages/Consumer/report_monthly.html', {'transcriber_name': transcriber_name,
+                                                              'allTransactionIn': allTransactionIn})
 
 
 @login_required(login_url='/login/')
-def sr_report_sales_analysis_json(request):
-    get_data = request.GET
-    shop_name = get_data['shop']
-    shop_object = Consumer.objects.get(id=shop_name)
+def user_due_report(request):
+    sr_name = request.session['user']
+    sr_object = ACL.objects.get(loginID=sr_name).loginUser
+    transcriber_name = sr_object.name
+    # allBalance = BuyerSellerAccount.objects.filter(seller=sr_object)
+    # sell_transaction = Transaction.objects.filter(seller=sr_object)
+    # dueTransactions = dueTransaction.objects.filter(seller=sr_object)
+    allBalanceIn = BuyerSellerAccount.objects.filter(buyer=sr_object)
+    sell_transactionIn = Transaction.objects.filter(buyer=sr_object)
+    dueTransactionsIn = dueTransaction.objects.filter(buyer=sr_object)
 
-    shop_inventory = BuySellProfitInventoryIndividual.objects.filter(shop=shop_object)
-    shop_consumer = ConsumerType.objects.get(type_name='Seller')
-    this_year = get_data['year']
-    print(this_year)
-    this_month = get_data['month']
-    output = '{"data": [ '
-
-    if get_data['t'] == '1':
-        rank = 1
-        for a_product in Product.objects.all():
-            count = 0
-            product_price = 0
-            product_name = a_product.name
-            for this_day_transaction in Transaction.objects.filter(seller=shop_object, DateAdded__year=this_year,
-                                                                   DateAdded__month=this_month):
-                # start counting for this product
-                for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
-                    if product_in_this_transaction.product == a_product:
-                        if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
-                            if a_product.bulk_to_retail_unit == 0:
-                                count = count + product_in_this_transaction.quantity
-                                product_price = product_price + product_in_this_transaction.price_per_unit
-                            else:
-                                count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
-                                product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
-                        else:
-                            count = count + product_in_this_transaction.quantity
-                            product_price = product_price + product_in_this_transaction.price_per_unit
-
-            if count > 0:
-                output += '["%s","%s","%s"] ,' % (rank, product_name, str(count) + ' ' + a_product.retail_unit)
-                rank += 1
-    if get_data['t'] == '2':
-        rank = 1
-        for a_product in Product.objects.all():
-            count = 0
-            # product_price = 0
-            previous_product_price = 0
-            change = 0
-            product_name = a_product.name
-            for this_day_transaction in Transaction.objects.filter(seller=shop_object):
-                # start counting for this product
-                for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
-                    if product_in_this_transaction.product == a_product:
-                        if count == 0:
-                            previous_product_price = product_in_this_transaction.price_per_unit
-                        product_price = product_in_this_transaction.price_per_unit
-                        change += abs(previous_product_price - product_price)
-                        count += 1
-            if count > 0:
-                output += '["%s","%s","%s","%s"] ,' % (rank, product_name, count,
-                                                       change/count)
-                rank += 1
-    if get_data['t'] == '3':
-
-        print(this_month)
-        day = 1
-        #
-        # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
-        while day < 32:
-            day_string = True
-            rank = 1
-            for a_product in Product.objects.all():
-                count = 0
-                product_price = 0
-                product_name = a_product.name
-
-                for this_day_transaction in Transaction.objects.filter(seller=shop_object, DateAdded__year=this_year,
-                                                                       DateAdded__month=this_month, DateAdded__day=day):
-                    # start counting for this product
-
-                    for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
-
-                        if product_in_this_transaction.product == a_product:
-                            if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
-                                if a_product.bulk_to_retail_unit == 0:
-                                    count = count + product_in_this_transaction.quantity
-                                    product_price = product_price + product_in_this_transaction.price_per_unit
-                                else:
-                                    count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
-                                    product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
-                            else:
-                                count = count + product_in_this_transaction.quantity
-                                product_price = product_price + product_in_this_transaction.price_per_unit
-
-                if count > 0:
-                    if day_string:
-                        output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
-                        day_string = False
-                    output += '["","%s","%s","%s","%s"] ,' % (rank, product_name,
-                                                              str(count) + ' ' + a_product.retail_unit,
-                                                              float(product_price / count))
-                    rank += 1
-            day += 1
-            # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
-    if get_data['t'] == '4':
-        day = 1
-
-        # output += '["%s/%s/%s","","","",""] ,' % (day, this_month, this_year)
-        while day < 8:
-            day_string = True
-            rank = 1
-            for a_product in Product.objects.all():
-                count = 0
-                product_price = 0
-                product_name = a_product.name
-
-                for this_day_transaction in Transaction.objects.filter(seller=shop_object, DateAdded__week_day=day):
-                    # start counting for this product
-
-                    for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
-
-                        if product_in_this_transaction.product == a_product:
-                            if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
-                                if a_product.bulk_to_retail_unit == 0:
-                                    count = count + product_in_this_transaction.quantity
-                                    product_price = product_price + product_in_this_transaction.price_per_unit
-                                else:
-                                    count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
-                                    product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
-                            else:
-                                count = count + product_in_this_transaction.quantity
-                                product_price = product_price + product_in_this_transaction.price_per_unit
-
-                if count > 0:
-                    if day_string:
-                        if day == 1:
-                            output += '["%s","","","",""] ,' % 'Sunday'
-                        elif day == 2:
-                            output += '["%s","","","",""] ,' % 'Monday'
-                        elif day == 3:
-                            output += '["%s","","","",""] ,' % 'Tuesday'
-                        elif day == 4:
-                            output += '["%s","","","",""] ,' % 'Wednesday'
-                        elif day == 5:
-                            output += '["%s","","","",""] ,' % 'Thursday'
-                        elif day == 6:
-                            output += '["%s","","","",""] ,' % 'Friday'
-                        elif day == 7:
-                            output += '["%s","","","",""] ,' % 'Saturday'
-                        day_string = False
-                    output += '["","%s","%s","%s","%s"] ,' % (rank, product_name,
-                                                              str(count) + ' ' + a_product.retail_unit,
-                                                              float(product_price / count))
-                    rank += 1
-            day += 1
-    if get_data['t'] == '5':
-        this_year = datetime.date.today().year
-        day_string = True
-        for a_product in Product.objects.all():
-            count = 0
-            product_profit = 0
-            product_name = a_product.name
-            for this_day_transaction in BuySellProfitInventoryIndividual.objects.filter(shop_id=shop_object):
-                # start counting for this product
-                if this_day_transaction.product == a_product:
-                    product_profit += this_day_transaction.profit
-                    count += 1
-            output += '["%s","%s"] ,' % (product_name, product_profit)
-    output = output[:-1]
-    output += ']}'
-    return HttpResponse(output, content_type="text/plain")
+    return render(request, 'pages/Consumer/report_due.html', {'transcriber_name': transcriber_name,
+                                                          # 'sell_transaction': sell_transaction,
+                                                          # 'dueTransactions': dueTransactions,
+                                                          # 'allBalance': allBalance,
+                                                          'sell_transactionIn': sell_transactionIn,
+                                                          'dueTransactionsIn': dueTransactionsIn,
+                                                          'allBalanceIn': allBalanceIn})
