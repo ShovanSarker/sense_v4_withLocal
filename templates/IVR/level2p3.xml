@@ -1,19 +1,20 @@
 {% extends "IVR/base.xml" %}
-        {% block content %}
-<form id="Main">
-    <record name="rec43" beep="true" dtmfterm="true" finalsilence="5s" maxtime="100s"
-            type="audio/mp3;bitrate=16;quality=4">
-        <!-- this audio will say apni ja ja sell korechen taar naam, poriman o mullo bolun -->
-        <!--<audio src="http://alpha.sense.ai/media/ivr_voice/1.wav" fetchhint="prefetch" />-->
+{% block content %}
+    <form id="Main">
+        <record name="rec43" beep="true" dtmfterm="true" finalsilence="5s" maxtime="100s">
+            <!-- this audio will say apni ja ja sell korechen taar naam, poriman o mullo bolun -->
+            <!--<audio src="http://alpha.sense.ai/media/ivr_voice/1.wav" fetchhint="prefetch" />-->
 
-        <!-- TODO have to add bangla audio here-->
+            <!-- TODO have to add bangla audio here-->
 
-        {% if sell %}
-        <audio src="http://159.203.66.200/media/ivr_recordings/B-03.wav" fetchhint="prefetch" />
-        {% else %}
-        <audio src="http://159.203.66.200/media/ivr_recordings/B-04.wav" fetchhint="prefetch" />
-        {% endif %}
-        <!--<prompt>Who did you sell it to ? Press hash after telling the name.</prompt>-->
+            {% if sell %}
+                <audio src="http://159.203.66.200/media/ivr_recordings/B-03.wav" fetchhint="prefetch" />
+            {% else %}
+                <audio src="http://159.203.66.200/media/ivr_recordings/B-04.wav" fetchhint="prefetch" />
+            {% endif %}
+            <!--<prompt>Who did you sell it to ? Press hash after telling the name.</prompt>-->
+
+        </record>
         <filled>
             <log expr="rec43$.duration"/>
             <log expr="rec43$.termchar"/>
@@ -21,9 +22,8 @@
             <!-- We all love to hear our own voices: -->
             <!--<prompt>thanks</prompt>-->
             <audio src="http://159.203.66.200/media/ivr_recordings/A-05.wav" fetchhint="prefetch" />
-            <submit next="http://159.203.66.200/saverecord/?intro_done=1&amp;level=2&amp;purpose={{ purpose }}&amp;part=3&amp;session.callerid={{ caller }}&amp;tid={{ tid }}" method="POST"
-                    namelist="rec43" enctype="multipart/form-data"/>
+            <submit next="http://159.203.66.200/saverecord/?intro_done=1&amp;level=2&amp;purpose={{ purpose }}&amp;part=3&amp;session.callerid={{ caller }}&amp;tid={{ tid }}" method="post"
+                    namelist="rec43" enctype="multipart/form-data" />
         </filled>
-    </record>
-</form>
-        {% endblock %}
+    </form>
+{% endblock %}

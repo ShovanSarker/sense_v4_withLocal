@@ -1,25 +1,22 @@
 <?xml version="1.0"?>
 <vxml version="2.0" xmlns="http://www.w3.org/2001/vxml">
-    <form>
-        <record name="awaymessage" beep="true" maxtime="10s"
-                finalsilence="4s" dtmfterm="true">
-            <prompt>
-                At the tone, please record your message
-            </prompt>
-        </record>
-        <field name="confirm" type="boolean">
-            <prompt>
-                The message is <value expr="awaymessage"/>
-            </prompt>
-            <prompt>
-                To keep it, please say yes. To discard it, say no
-            </prompt>
-            <filled>
-                <if cond="comfirm">
-                    <submit next="save.php" method="post"
-                            namelist="awaymessage" />
-                </if>
-            </filled>
-        </field>
-    </form>
+ <form>
+  <field name="maincourse">
+   <noinput> <reprompt/> </noinput>
+   <nomatch> <reprompt/> </nomatch>
+   <prompt count="1">Please select an entree.</prompt>
+   <prompt count="2">Today, we're featuring:<enumerate/></prompt>
+   <option dtmf="1" value="fish"> swordfish </option>
+   <option dtmf="2" value="beef"> roast beef </option>
+   <option dtmf="3" value="frog"> frog legs </option>
+   <filled>
+    <prompt>
+     <value expr="maincourse"/>, good choice.
+     Please enjoy your meal.
+    </prompt>
+    <submit next="maincourse.cgi"
+     method="post" namelist="maincourse"/>
+   </filled>
+  </field>
+ </form>
 </vxml>

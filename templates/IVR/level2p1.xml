@@ -1,22 +1,22 @@
 {% extends "IVR/base.xml" %}
 {% block content %}
     <form id="Main">
-        <record name="rec41" beep="true" dtmfterm="true" finalsilence="5s" maxtime="100s"
-                type="audio/mp3;bitrate=16;quality=4">
+        <record name="rec41" beep="true" dtmfterm="true" finalsilence="5s" maxtime="100s">
             <!-- this audio will say apni ja ja sell korechen taar naam, poriman o mullo bolun -->
             <!--<audio src="http://alpha.sense.ai/media/ivr_voice/1.wav" fetchhint="prefetch" />-->
 
             <!-- TODO have to add bangla audio here-->
             <!--<prompt>mention the product name, quantity and unit price. and press hash</prompt>-->
             <audio src="http://159.203.66.200/media/ivr_recordings/B-01.wav" fetchhint="prefetch" />
-            <filled>
-                <log expr="rec41$.duration"/>
-                <log expr="rec41$.termchar"/>
-                <log expr="rec41$.size"/>
-                <!-- We all love to hear our own voices: -->
-                <submit next="http://159.203.66.200/saverecord/?intro_done=1&amp;level=2&amp;purpose={{ purpose }}&amp;part=1&amp;session.callerid={{ caller }}&amp;tid={{ tid }}" method="POST"
-                        namelist="rec41" enctype="multipart/form-data"/>
-            </filled>
+
         </record>
+        <filled>
+            <log expr="rec41$.duration"/>
+            <log expr="rec41$.termchar"/>
+            <log expr="rec41$.size"/>
+            <!-- We all love to hear our own voices: -->
+            <submit next="http://159.203.66.200/saverecord/?intro_done=1&amp;level=2&amp;purpose={{ purpose }}&amp;part=1&amp;session.callerid={{ caller }}&amp;tid={{ tid }}" method="post"
+                    namelist="rec41" enctype="multipart/form-data" />
+        </filled>
     </form>
 {% endblock %}
