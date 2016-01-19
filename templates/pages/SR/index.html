@@ -54,6 +54,12 @@
                 </div>
             </div>
         </div>
+        {% if wrong %}
+            <div class="alert alert-danger alert-dismissable">
+                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+                <p align="center">{{ text }}</p>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}

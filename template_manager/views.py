@@ -12,6 +12,7 @@ from shop_inventory.models import Inventory, BuySellProfitInventoryIndividual, B
 from transcriber_management.models import Transcriber, TranscriberInTranscription, FailedTranscription
 import datetime
 from django.db.models import Q
+from django.contrib.auth.models import User
 from django.contrib.sessions.backends.db import SessionStore
 from django.db.models import Count
 
@@ -75,13 +76,25 @@ def home(request):
         print(login_user.loginUser.name)
         transcriber_name = login_user.loginUser.name
         if login_user.loginUser.type.type_name == 'Distributor':
-            return render(request, 'pages/Distributor/index.html', {'transcriber_name': transcriber_name})
+            if login_user.loginUser.number_of_child == 'CHANGED !!!':
+                return render(request, 'pages/Distributor/index.html', {'transcriber_name': transcriber_name})
+            else:
+                return redirect('/change_password/')
         elif login_user.loginUser.type.type_name == 'SR':
-            return render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name})
+            if login_user.loginUser.number_of_child == 'CHANGED !!!':
+                return render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name})
+            else:
+                return redirect('/change_password/')
         elif login_user.loginUser.type.type_name == 'Seller':
-            return render(request, 'pages/Shop/index.html', {'transcriber_name': transcriber_name})
+            if login_user.loginUser.number_of_child == 'CHANGED !!!':
+                return render(request, 'pages/Shop/index.html', {'transcriber_name': transcriber_name})
+            else:
+                return redirect('/change_password/')
         elif login_user.loginUser.type.type_name == 'Buyer':
-            return render(request, 'pages/Consumer/index.html', {'transcriber_name': transcriber_name})
+            if login_user.loginUser.number_of_child == 'CHANGED !!!':
+                return render(request, 'pages/Consumer/index.html', {'transcriber_name': transcriber_name})
+            else:
+                return redirect('/change_password/')
     else:
         number_of_reg_calls = VoiceReg.objects.filter().count()
         number_of_transaction_calls = VoiceRecord.objects.filter().count()
@@ -1714,7 +1727,7 @@ def add_sr_page(request):
         else:
             notification = 'Item not found'
 
-    return render(request, 'pages/Distributor/add_sr.html',
+    return render(request, 'pages/Distributor/add_SR.html',
                   {'subscribers': all_subscriber,'add_notification': add_notification,
                    # 'shop_list_base': all_shop_for_base,
                    # 'all_consumer_for_base' :all_consumer_for_base,
@@ -1727,18 +1740,22 @@ def dr_monthly_report(request):
     dr_name = request.session['user']
     dr_object = ACL.objects.get(loginID=dr_name).loginUser
     transcriber_name = dr_object.name
+    transcriber_id = dr_object.id
     all_subscriber = ACL.objects.filter(distUser=dr_object)
     post_data = request.POST
+    print(post_data)
     if 'sr' in post_data:
         sr_object = Consumer.objects.get(id=post_data['sr'])
         allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
         return render(request, 'pages/Distributor/report_monthly.html', {'transcriber_name': transcriber_name,
                                                                          'hasReport': True,
                                                                          'subscribers': all_subscriber,
+                                                                         'transcriber_id': transcriber_id,
                                                                          'allTransaction': allTransaction})
     else:
         # allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
         return render(request, 'pages/Distributor/report_monthly.html', {'transcriber_name': transcriber_name,
+                                                                         'transcriber_id': transcriber_id,
                                                                          'subscribers': all_subscriber,
                                                                          'hasReport': False})
 
@@ -1748,6 +1765,7 @@ def dr_due_report(request):
     sr_name = request.session['user']
     dr_object = ACL.objects.get(loginID=sr_name).loginUser
     transcriber_name = dr_object.name
+    transcriber_id = dr_object.id
     all_subscriber = ACL.objects.filter(distUser=dr_object)
     post_data = request.POST
     if 'sr' in post_data:
@@ -1759,6 +1777,7 @@ def dr_due_report(request):
         return render(request, 'pages/Distributor/report_due.html', {'transcriber_name': transcriber_name,
                                                                      'sell_transaction': sell_transaction,
                                                                      'dueTransactions': dueTransactions,
+                                                                     'transcriber_id': transcriber_id,
                                                                      'hasReport': True,
                                                                      'subscribers': all_subscriber,
                                                                      'allBalance': allBalance})
@@ -1766,6 +1785,7 @@ def dr_due_report(request):
     else:
         # allTransaction = BuyerSellerAccount.objects.filter(seller=sr_object)
         return render(request, 'pages/Distributor/report_due.html', {'transcriber_name': transcriber_name,
+                                                                     'transcriber_id': transcriber_id,
                                                                      'subscribers': all_subscriber,
                                                                      'hasReport': False})
 
@@ -1776,6 +1796,7 @@ def dr_report_sales_analysis(request):
     dr_name = request.session['user']
     dr_object = ACL.objects.get(loginID=dr_name).loginUser
     transcriber_name = dr_object.name
+    transcriber_id = dr_object.id
     post_data = request.POST
     print(post_data)
     # shop_object = sr_object
@@ -1793,7 +1814,7 @@ def dr_report_sales_analysis(request):
             month = datetime.date.today().month
             year = datetime.date.today().year
         return render(request, 'pages/Distributor/report_sales_analysis.html', {'shop_name': shop_name,
-                                                                                # 'all_consumer_for_base' :all_consumer_for_base,
+                                                                                'transcriber_id': transcriber_id,
                                                                                 'shop_id': shop_id,
                                                                                 'subscribers': all_subscriber,
                                                                                 'transcriber_name': transcriber_name,
@@ -1802,11 +1823,9 @@ def dr_report_sales_analysis(request):
                                                                                 'year': year})
     else:
         return render(request, 'pages/Distributor/report_sales_analysis.html', {'shop_name': 'Not Selected',
-                                                                                # 'all_consumer_for_base' :all_consumer_for_base,
+                                                                                'transcriber_id': transcriber_id,
                                                                                 'subscribers': all_subscriber,
-                                                                                # 'bangla': bangla,
                                                                                 'transcriber_name': transcriber_name,
-                                                                                # 'month': month,
                                                                                 'hasReport': hasReport})
 
 
@@ -1881,7 +1900,7 @@ def user_monthly_report(request):
     allTransactionIn = BuyerSellerAccount.objects.filter(buyer=sr_object)
 
     return render(request, 'pages/Consumer/report_monthly.html', {'transcriber_name': transcriber_name,
-                                                              'allTransactionIn': allTransactionIn})
+                                                                  'allTransactionIn': allTransactionIn})
 
 
 @login_required(login_url='/login/')
@@ -1897,9 +1916,109 @@ def user_due_report(request):
     dueTransactionsIn = dueTransaction.objects.filter(buyer=sr_object)
 
     return render(request, 'pages/Consumer/report_due.html', {'transcriber_name': transcriber_name,
-                                                          # 'sell_transaction': sell_transaction,
-                                                          # 'dueTransactions': dueTransactions,
-                                                          # 'allBalance': allBalance,
-                                                          'sell_transactionIn': sell_transactionIn,
-                                                          'dueTransactionsIn': dueTransactionsIn,
-                                                          'allBalanceIn': allBalanceIn})
+                                                              # 'sell_transaction': sell_transaction,
+                                                              # 'dueTransactions': dueTransactions,
+                                                              # 'allBalance': allBalance,
+                                                              'sell_transactionIn': sell_transactionIn,
+                                                              'dueTransactionsIn': dueTransactionsIn,
+                                                              'allBalanceIn': allBalanceIn})
+
+
+@login_required(login_url='/login/')
+def change_password(request):
+    # user = request.session['user']
+    post_data = request.POST
+
+    user_name = request.session['user']
+    user_object = ACL.objects.get(loginID=user_name).loginUser
+    transcriber_name = user_object.name
+    user = user_object.phone[-9:]
+    wrong = False
+    text = ''
+
+    if 'csrfmiddlewaretoken' in post_data:
+        if post_data['password'] == post_data['re-password']:
+            if User.objects.filter(username=user).exists():
+                u = User.objects.get(username=user)
+                u.set_password(post_data['password'])
+                u.save()
+
+                user_ID = user_object.id
+                this_user = Consumer.objects.get(id=user_ID)
+                this_user.number_of_child = 'CHANGED !!!'
+                this_user.save()
+                wrong = True
+                text = 'Password is successfully changed'
+                if user_object.type.type_name == 'Distributor':
+                    display = render(request, 'pages/Distributor/index.html', {'transcriber_name': transcriber_name,
+                                                                               'wrong': wrong,
+                                                                               'text': text})
+                elif user_object.type.type_name == 'SR':
+                    display = render(request, 'pages/SR/index.html', {'transcriber_name': transcriber_name,
+                                                                      'wrong': wrong,
+                                                                      'text': text})
+                elif user_object.type.type_name == 'Seller':
+                    display = render(request, 'pages/Shop/index.html', {'transcriber_name': transcriber_name,
+                                                                        'wrong': wrong,
+                                                                        'text': text})
+                elif user_object.type.type_name == 'Buyer':
+                    display = render(request, 'pages/Consumer/index.html', {'transcriber_name': transcriber_name,
+                                                                            'wrong': wrong,
+                                                                            'text': text})
+            else:
+                wrong = True
+                text = 'Something Wrong'
+                if user_object.type.type_name == 'Distributor':
+                    display = render(request, 'pages/Distributor/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                         'wrong': wrong,
+                                                                                         'text': text})
+                elif user_object.type.type_name == 'SR':
+                    display = render(request, 'pages/SR/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                'wrong': wrong,
+                                                                                'text': text})
+                elif user_object.type.type_name == 'Seller':
+                    display = render(request, 'pages/Shop/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                  'wrong': wrong,
+                                                                                  'text': text})
+                elif user_object.type.type_name == 'Buyer':
+                    display = render(request, 'pages/Consumer/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                      'wrong': wrong,
+                                                                                      'text': text})
+        else:
+            wrong = True
+            text = 'Passwords do NOT match. Please try again'
+            if user_object.type.type_name == 'Distributor':
+                display = render(request, 'pages/Distributor/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                     'wrong': wrong,
+                                                                                     'text': text})
+            elif user_object.type.type_name == 'SR':
+                display = render(request, 'pages/SR/change_password.html', {'transcriber_name': transcriber_name,
+                                                                            'wrong': wrong,
+                                                                            'text': text})
+            elif user_object.type.type_name == 'Seller':
+                display = render(request, 'pages/Shop/change_password.html', {'transcriber_name': transcriber_name,
+                                                                              'wrong': wrong,
+                                                                              'text': text})
+            elif user_object.type.type_name == 'Buyer':
+                display = render(request, 'pages/Consumer/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                  'wrong': wrong,
+                                                                              'text': text})
+    else:
+        wrong = False
+        if user_object.type.type_name == 'Distributor':
+            display = render(request, 'pages/Distributor/change_password.html', {'transcriber_name': transcriber_name,
+                                                                                 'wrong': wrong,
+                                                                                 'text': text})
+        elif user_object.type.type_name == 'SR':
+            display = render(request, 'pages/SR/change_password.html', {'transcriber_name': transcriber_name,
+                                                                        'wrong': wrong,
+                                                                        'text': text})
+        elif user_object.type.type_name == 'Seller':
+            display = render(request, 'pages/Shop/change_password.html', {'transcriber_name': transcriber_name,
+                                                                          'wrong': wrong,
+                                                                          'text': text})
+        elif user_object.type.type_name == 'Buyer':
+            display = render(request, 'pages/Consumer/change_password.html', {'transcriber_name': transcriber_name,
+                                                                              'wrong': wrong})
+
+    return display

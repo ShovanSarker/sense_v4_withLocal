@@ -19,7 +19,7 @@ class Consumer(models.Model):
     email = models.EmailField(null=True, blank=True)
     age = models.FloatField(null=True, blank=True)
     married = models.BooleanField(default=False)
-    number_of_child = models.IntegerField(null=True, blank=True, default=0)
+    number_of_child = models.CharField(null=True, blank=True, max_length=255)
     gender_choice = (
         ('Male', 'Male'),
         ('Female', 'Female'),

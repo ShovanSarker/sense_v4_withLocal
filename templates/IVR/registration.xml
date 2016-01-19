@@ -7,6 +7,7 @@
         <audio src="http://159.203.66.200/media/ivr_recordings/00.wav" fetchhint="prefetch" />
 <!--<prompt>Welcome to hishab</prompt>-->
         <audio src="http://159.203.66.200/media/ivr_recordings/01.wav" fetchhint="prefetch" />
+        <prompt>or press 3 if you are a distributor</prompt>
 <!--<prompt>Press one if you are a shopkeeper or two if you are consumer</prompt>-->
         <!-- Define the grammar. -->
         <grammar xml:lang="en-us" root = "myrule" mode="dtmf" >
@@ -14,6 +15,7 @@
                 <one-of>
                     <item> 1 </item>
                     <item> 2 </item>
+                    <item> 3 </item>
                 </one-of>
             </rule>
         </grammar>
@@ -42,7 +44,8 @@
             <goto next="http://159.203.66.200/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Consumer&amp;level=1" />
         <elseif cond="SouthParkCharacter == '2'" />
             <goto next="http://159.203.66.200/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Shop&amp;level=1" />
-
+        <elseif cond="SouthParkCharacter == '3'" />
+            <goto next="http://159.203.66.200/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Distributor&amp;level=1" />
         </if>
     </filled>
 </form>

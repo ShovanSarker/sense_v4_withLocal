@@ -68,13 +68,16 @@ def add_transaction(request):
             if caller_object.type.type_name == 'Buyer':
                 buyer_object = caller_object
                 seller_object = other_party_object
-            elif caller_object.type.type_name == 'Distributor':
+            elif caller_object.type.type_name == 'Distributor' or caller_object.type.type_name == 'SR':
                 buyer_object = other_party_object
                 seller_object = caller_object
             else:
                 if other_party_object.type.type_name == 'Buyer':
                     buyer_object = other_party_object
                     seller_object = caller_object
+                elif other_party_object.type.type_name == 'Distributor' or other_party_object.type.type_name == 'SR':
+                    buyer_object = caller_object
+                    seller_object = other_party_object
                 else:
                     buyer_object = caller_object
                     seller_object = other_party_object
@@ -160,8 +163,8 @@ def add_transaction(request):
                         if transaction_with == 'Buyer':
                             inventory.left -= float(product_quantity)
                             inventory.save()
-                        elif transaction_with == 'Distributor':
-                            inventory.left += float(product_quantity) * product_object.bulk_to_retail_unit
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
+                            inventory.left += float(product_quantity)
                             inventory.save()
                     else:
                         if transaction_with == 'Buyer':
@@ -171,8 +174,8 @@ def add_transaction(request):
                                                   unit=product_object.retail_unit,
                                                   left=left)
                             inventory.save()
-                        elif transaction_with == 'Distributor':
-                            left = float(product_quantity) * product_object.bulk_to_retail_unit
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
+                            left = float(product_quantity)
                             inventory = Inventory(shop=shop,
                                                   product=product_object,
                                                   unit=product_object.retail_unit,
@@ -183,14 +186,14 @@ def add_transaction(request):
                         pro_inventory = ProductInventory.objects.get(product=product_object)
                         if transaction_with == 'Buyer':
                             pro_inventory.sold += float(product_quantity)
-                        elif transaction_with == 'Distributor':
-                            pro_inventory.sold += float(product_quantity) * product_object.bulk_to_retail_unit
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
+                            pro_inventory.sold += float(product_quantity)
                         pro_inventory.save()
                     else:
                         if transaction_with == 'Buyer':
                             sold = float(product_quantity)
-                        elif transaction_with == 'Distributor':
-                            sold = float(product_quantity) * product_object.bulk_to_retail_unit
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
+                            sold = float(product_quantity)
                         pro_inventory = ProductInventory(product=product_object,
                                                          unit=product_object.retail_unit,
                                                          sold=sold)
@@ -220,12 +223,12 @@ def add_transaction(request):
                                 buy_sell_profit.selling_price = product_price
                             else:
                                 buy_sell_profit.selling_price = (buy_sell_profit.selling_price + product_price) / 2
-                        elif transaction_with == 'Distributor':
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
                             if buy_sell_profit.buying_price == 0:
-                                buy_sell_profit.buying_price = (product_price / product_object.bulk_to_retail_unit)
+                                buy_sell_profit.buying_price = (product_price)
                             else:
                                 buy_sell_profit.buying_price = ((buy_sell_profit.buying_price +
-                                                                 (product_price / product_object.bulk_to_retail_unit)) / 2)
+                                                                 (product_price)) / 2)
                         buy_sell_profit.profit = buy_sell_profit.selling_price - buy_sell_profit.buying_price
                         buy_sell_profit.save()
                     else:
@@ -234,11 +237,11 @@ def add_transaction(request):
                                                                      product=product_object,
                                                                      unit=product_object.retail_unit,
                                                                      selling_price=product_price)
-                        elif transaction_with == 'Distributor':
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
                             buy_sell_profit = BuySellProfitInventory(shop=shop,
                                                                      product=product_object,
                                                                      unit=product_object.retail_unit,
-                                                                     buying_price=(product_price / product_object.bulk_to_retail_unit))
+                                                                     buying_price=(product_price))
                         buy_sell_profit.profit = buy_sell_profit.selling_price - buy_sell_profit.buying_price
                         buy_sell_profit.save()
 
@@ -252,12 +255,12 @@ def add_transaction(request):
                             else:
                                 product_buy_sell_profit.selling_price = (product_buy_sell_profit.selling_price + product_price) / 2
                             product_buy_sell_profit.total_sold += float(product_quantity)
-                        elif transaction_with == 'Distributor':
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
                             if product_buy_sell_profit.buying_price == 0:
-                                product_buy_sell_profit.buying_price = (product_price / product_object.bulk_to_retail_unit)
+                                product_buy_sell_profit.buying_price = (product_price)
                             else:
                                 product_buy_sell_profit.buying_price = ((product_buy_sell_profit.buying_price +
-                                                                         (product_price / product_object.bulk_to_retail_unit)) / 2)
+                                                                         (product_price)) / 2)
                         product_buy_sell_profit.profit = product_buy_sell_profit.selling_price - product_buy_sell_profit.buying_price
                         product_buy_sell_profit.q_profit = product_buy_sell_profit.profit * product_buy_sell_profit.total_sold
                         product_buy_sell_profit.save()
@@ -267,17 +270,17 @@ def add_transaction(request):
                                                                                     unit=product_object.retail_unit,
                                                                                     selling_price=product_price,
                                                                                     total_sold=float(product_quantity))
-                        elif transaction_with == 'Distributor':
+                        elif transaction_with == 'Distributor' or transaction_with == 'SR':
                             product_buy_sell_profit = ProductBuySellProfitInventory(product=product_object,
                                                                                     unit=product_object.retail_unit,
-                                                                                    buying_price=(product_price / product_object.bulk_to_retail_unit))
+                                                                                    buying_price=(product_price))
                         profit_here = product_buy_sell_profit.selling_price - product_buy_sell_profit.buying_price
                         product_buy_sell_profit.profit = profit_here
                         product_buy_sell_profit.q_profit = profit_here * product_buy_sell_profit.total_sold
                         product_buy_sell_profit.save()
 
-                if buyer_object.type.type_name == 'Distributor' or seller_object.type.type_name == 'Distributor':
-                    product_unit = product_object.bulk_wholesale_unit
+                if buyer_object.type.type_name == 'Distributor' or seller_object.type.type_name == 'Distributor' or buyer_object.type.type_name == 'SR' or seller_object.type.type_name == 'SR':
+                    product_unit = product_object.retail_unit
                 else:
                     product_unit = product_object.retail_unit
                 # product_quantity = float(product_quantity)
@@ -312,18 +315,18 @@ def add_transaction(request):
                         'from %s.' \
                         ' Total bill : taka %s, Paid : taka %s, Due : taka %s.' \
                         ' Thanks for shopping with Hishab Limited ' % (sms_text_buyer,
-                                                      sms_text_products, sms_text_seller,
-                                                      format(float(sms_total_bill),'.2f'),
-                                                      format(float(sms_total_bill)-float(sms_total_due),'.2f'),
-                                                      format(float(sms_total_due),'.2f'))
+                                                                       sms_text_products, sms_text_seller,
+                                                                       format(float(sms_total_bill),'.2f'),
+                                                                       format(float(sms_total_bill)-float(sms_total_due),'.2f'),
+                                                                       format(float(sms_total_due),'.2f'))
             seller_sms = '%s, you have sold %s ' \
                          'to %s.' \
                          ' Total bill : taka %s, Paid : taka %s,Due : taka %s.' \
                          ' Thanks for shopping with Hishab Limited ' % (sms_text_seller,
-                                                       sms_text_products, sms_text_buyer,
-                                                       format(float(sms_total_bill),'.2f'),
-                                                      format(float(sms_total_bill)-float(sms_total_due),'.2f'),
-                                                      format(float(sms_total_due),'.2f'))
+                                                                        sms_text_products, sms_text_buyer,
+                                                                        format(float(sms_total_bill),'.2f'),
+                                                                        format(float(sms_total_bill)-float(sms_total_due),'.2f'),
+                                                                        format(float(sms_total_due),'.2f'))
             # caller scoring update !
             send_sms(buyer_sms, buyer_object.phone)
             send_sms(seller_sms, seller_object.phone)
