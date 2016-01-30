@@ -60,8 +60,19 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="{% static 'js/inspinia.js' %}"></script>
-
-
+{#    <style type="text/css">#}
+{#        @media print{#}
+{#            body * {#}
+{#                visibility: hidden;#}
+{#            }#}
+{#            #printable { #}
+{#                visibility: visible;#}
+{#                position: absolute;#}
+{#                left: 0;#}
+{#                top: 0;#}
+{#            }#}
+{#        }#}
+{#    </style>#}
 </head>
 
 <body>
@@ -71,7 +82,7 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown logo-text profile-element">
-{#                        <h3>Hishab Limited</h3>#}
+                        {#                        <h3>Hishab Limited</h3>#}
                         <img src="{% static 'img/logo-2.png' %}" alt="" style="height: 100px; width: 100px; margin-left: 20px;">
                     </div>
                     <div class="logo-element">

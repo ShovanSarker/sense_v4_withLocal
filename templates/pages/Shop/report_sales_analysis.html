@@ -2,191 +2,206 @@
 {% extends "pages/Shop/base.html" %}
 {% load static %}
 {% block content %}
-<!--Due Summary for shops content-->
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-9">
-        <h2>Sales Analysis Report</h2>
-        <div class="breadcumb"><span>{{shop_name}}</span></div>
+    <!--Due Summary for shops content-->
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-9">
+            <h2>Sales Analysis Report</h2>
+            <input type="button" onclick="printDiv('printable')" value="Print" />
+            <div class="breadcumb"><span>{{shop_name}}</span></div>
+        </div>
+
     </div>
 
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <!--year month selection window-->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Choose year and month</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!--year month selection window-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Choose year and month</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form action="/Shop/sales_analysis_report/" method="post">{% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="shop">Select Year</label>
+                                        <select class="form-control m-b" name="year">
+                                            <option value="2014">2014</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2016">2016</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="shop">Select Month</label>
+                                        <select class="form-control m-b" name="month">
+                                            <option value="1">January</option>
+                                            <option value="2">February</option>
+                                            <option value="3">March</option>
+                                            <option value="4">April</option>
+                                            <option value="5">May</option>
+                                            <option value="6">June</option>
+                                            <option value="7">July</option>
+                                            <option value="8">August</option>
+                                            <option value="9">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-11">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <form action="/Shop/sales_analysis_report/" method="post">{% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="shop">Select Year</label>
-                                    <select class="form-control m-b" name="year">
-                                        <option value="2014">2014</option>
-                                        <option value="2015">2015</option>
-                                        <option value="2016">2016</option>
-                                    </select>
-                                </div>
+            </div>
+        </div>
+        <!--selection area done-->
+        <div id="printable">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Most Sold Products</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="shop">Select Month</label>
-                                    <select class="form-control m-b" name="month">
-                                        <option value="1">January</option>
-                                        <option value="2">February</option>
-                                        <option value="3">March</option>
-                                        <option value="4">April</option>
-                                        <option value="5">May</option>
-                                        <option value="6">June</option>
-                                        <option value="7">July</option>
-                                        <option value="8">August</option>
-                                        <option value="9">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                </div>
-                            </div>
-                            </div>
-                        <div class="row">
-                            <div class="col-md-offset-11">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+
+                        </div>
+                        <div class="ibox-content">
+                            <table class="table table-striped table-bordered table-hover" id="date_sell">
+                                <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Product Name</th>
+                                    <th>Sold Quantity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Day wise Product Sale</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--selection area done-->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Most Sold Products</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
+                        <div class="ibox-content">
 
-                </div>
-                <div class="ibox-content">
-                    <table class="table table-striped table-bordered table-hover" id="date_sell">
-                        <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Product Name</th>
-                            <th>Sold Quantity</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                            <table class="table table-striped table-bordered table-hover" id="product_sell">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rank</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Average Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Day wise Product Sale</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="ibox-content">
-
-                    <table class="table table-striped table-bordered table-hover" id="product_sell">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Rank</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Average Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Day wise Product Sale Week Days</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Day wise Product Sale Week Days</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <table class="table table-striped table-bordered table-hover" id="product_sell1">
+                                <thead>
+                                <tr>
+                                    <th>WeekdayDate</th>
+                                    <th>Rank</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Average Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="ibox-content">
-
-                    <table class="table table-striped table-bordered table-hover" id="product_sell1">
-                        <thead>
-                        <tr>
-                            <th>WeekdayDate</th>
-                            <th>Rank</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Average Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    $(document).ready(function() {
-        $('#date_sell').dataTable( {
-            "bPaginate": false,
-            "bInfo": false,
-            "bFilter": false,
-            "aaSorting": [[1, "desc"]],
-            "ajax": "/SR/report_sales_analysis_json/?t=1&shop={{shop_id}}&month={{month}}&year={{year}}"
+    <script type="text/javascript">
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
 
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#date_sell').dataTable( {
+                "bPaginate": false,
+                "bInfo": false,
+                "bFilter": false,
+                "aaSorting": [[1, "desc"]],
+                "ajax": "/SR/report_sales_analysis_json/?t=1&shop={{shop_id}}&month={{month}}&year={{year}}"
+
+            } );
+            $('#product_sell').dataTable( {
+                "bSort": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "bFilter": false,
+                "ajax": "/SR/report_sales_analysis_json/?t=3&shop={{shop_id}}&month={{month}}&year={{year}}"
+            } );$('#product_sell1').dataTable( {
+                "bSort": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "bFilter": false,
+                "ajax": "/SR/report_sales_analysis_json/?t=4&shop={{shop_id}}&month={{month}}&year={{year}}"
+            } );
         } );
-        $('#product_sell').dataTable( {
-            "bSort": false,
-            "bPaginate": false,
-            "bInfo": false,
-            "bFilter": false,
-            "ajax": "/SR/report_sales_analysis_json/?t=3&shop={{shop_id}}&month={{month}}&year={{year}}"
-        } );$('#product_sell1').dataTable( {
-            "bSort": false,
-            "bPaginate": false,
-            "bInfo": false,
-            "bFilter": false,
-            "ajax": "/SR/report_sales_analysis_json/?t=4&shop={{shop_id}}&month={{month}}&year={{year}}"
-        } );
-    } );
 
-</script>
+    </script>
 
 {% endblock %}
 
