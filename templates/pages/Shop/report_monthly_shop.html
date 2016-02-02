@@ -8,10 +8,8 @@
             <h2>Monthly/Shop Report</h2>
             <div class="breadcumb"><span>{{ shop_name }}</span></div>
         </div>
-        <div class="col-lg-3 pull-right">
-            <a class="btn btn-outline btn-success btn-s" href="/monthly_shop_reports/?shop={{shop_name}}">English</a>
-            <a class="btn btn-outline btn-warning btn-s" href="/monthly_shop_reports/?shop={{shop_name}}&ban=1">বাংলা</a>
-            <a class="btn btn-outline btn-danger btn-s" title="print" href="/monthly_shop_reports_print/?shop={{shop_name}}" target="_blank"  id="dataTablePrint"><i class="fa fa-print"></i></a>
+        <div class="col-lg-3">
+            <i class="fa fa-print btn btn-outline btn-danger btn-s pull-right" onclick="printDiv('printable')"></i>
         </div>
     </div>
 
@@ -162,7 +160,7 @@
                     </div>
                 </div>
             </div>
-        {#            pie chart#}
+            {#            pie chart#}
 
             <div class="row">
                 <div class="col-lg-12">
@@ -354,7 +352,7 @@
                 </div>
             </div>
 
-{#            pie chart#}
+            {#            pie chart#}
 
             <div class="row">
                 <div class="col-lg-12">
