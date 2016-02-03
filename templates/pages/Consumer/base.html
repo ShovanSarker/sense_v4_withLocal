@@ -60,6 +60,20 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="{% static 'js/inspinia.js' %}"></script>
+{#    add this for bangla and english #}
+    <script>
+        $(document).ready(function(){
+            $("#bn").hide();
+            $("#Ban").click(function(){
+                $("#en").hide();
+                $("#bn").show();
+            });
+            $("#Eng").click(function(){
+                $("#bn").hide();
+                $("#en").show();
+            });
+        });
+    </script>
 
 </head>
 
