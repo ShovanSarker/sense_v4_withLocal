@@ -177,7 +177,7 @@ def save_registration_voice(request):
                                      caller_type=caller_type,
                                      tracking_id=tracking_id)
             new_voice_reg.save()
-            if get_data['caller_type'] == 'Shop':
+            if get_data['caller_type'] == 'Shop' or get_data['caller_type'] == 'Distributor':
                 shop = True
             else:
                 shop = False

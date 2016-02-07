@@ -6,7 +6,6 @@ body {
 	line-height: 1.4em; 
 	word-spacing:1px; 
 	letter-spacing:0.2px;
-
 }
 
 /*Removing elements here*/
@@ -20,8 +19,6 @@ body {
 .sidebar-collapse, 
 .footer {display: none}
 }
-
-
 
 /*
 TODO 1: Table width not fixed yet 

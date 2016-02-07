@@ -8,9 +8,9 @@
             <!-- TODO have to add bangla audio here-->
             <!--{% if shop %}<audio src="http://159.203.66.200/media/ivr_recordings/Audio%20recording%202014-12-22%2017-40-08.wav" fetchhint="prefetch" />{% else %}<audio src="http://159.203.66.200/media/ivr_recordings/Audio%20recording%202014-12-22%2017-39-35.wav" fetchhint="prefetch" />{% endif %}-->
             {% if shop %}
-                <audio src="http://159.203.66.200/media/ivr_recordings/02.wav" fetchhint="prefetch" />
+                <audio src="http://159.203.66.200/media/ivr_recordings/bn/3.wav" fetchhint="prefetch" />
             {% else %}
-                <audio src="http://159.203.66.200/media/ivr_recordings/07.wav" fetchhint="prefetch" />
+                <audio src="http://159.203.66.200/media/ivr_recordings/bn/6.wav" fetchhint="prefetch" />
             {% endif %}
             <!--<audio src="http://159.203.66.200/media/ivr_recordings/Registration%203.wav" fetchhint="prefetch" />-->
 

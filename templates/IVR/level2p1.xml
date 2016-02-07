@@ -7,7 +7,7 @@
 
             <!-- TODO have to add bangla audio here-->
             <!--<prompt>mention the product name, quantity and unit price. and press hash</prompt>-->
-            <audio src="http://159.203.66.200/media/ivr_recordings/B-01.wav" fetchhint="prefetch" />
+            <audio src="http://159.203.66.200/media/ivr_recordings/bn/13.wav" fetchhint="prefetch" />
 
         </record>
         <filled>

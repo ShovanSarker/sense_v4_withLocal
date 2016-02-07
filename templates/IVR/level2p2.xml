@@ -7,7 +7,7 @@
 
             <!-- TODO have to add bangla audio here-->
             <!--<prompt>whats the total and how much customer paid ? If there is a due, how much is it ? press hash after finish</prompt>-->
-            <audio src="http://159.203.66.200/media/ivr_recordings/B-02.wav" fetchhint="prefetch" />
+            <audio src="http://159.203.66.200/media/ivr_recordings/bn/14.wav" fetchhint="prefetch" />
 
         </record>
         <filled>
