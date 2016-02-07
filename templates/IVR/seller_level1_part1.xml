@@ -6,7 +6,7 @@
             <!--<audio src="http://alpha.sense.ai/media/ivr_voice/1.wav" fetchhint="prefetch" />-->
 
             <!-- TODO have to add bangla audio here-->
-            <audio src="http://159.203.66.200/media/ivr_recordings/A-01.wav" fetchhint="prefetch" />
+            <audio src="http://159.203.66.200/media/ivr_recordings/bn/10.wav" fetchhint="prefetch" />
             <!--<prompt>mention the product name, quantity and unit price one by one. press hash after finish. example: potato 1 kg 30 taka</prompt>-->
 
         </record>
