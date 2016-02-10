@@ -5,7 +5,7 @@
       <paths name="hishab.co">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/exor/senseV3" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/exor/web/senseV3" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

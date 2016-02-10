@@ -98,13 +98,25 @@ def get_sms(request):
                                              total_paid=amount,
                                              total_due=0)
                 transaction.save()
-                sms_text = 'You have received taka %s from %s. The remaining due amount is taka %s. Thanks for shopping with Hishab Limited.' %(format(amount,'.2f'), buyer_object.name, format(remain_due, '.2f'))
+
+
+                sms_text = 'Apni %s er kach theke %s taka peyechen. Oboshishto takar poriman %s taka. Hishab -er shathe thakar jonno dhonnobad.' %(buyer_object.name, format(amount,'.2f'), format(remain_due, '.2f'))
+                # sms_text = 'You have received taka %s from %s. The remaining due amount is taka %s. Thanks for shopping with Hishab Limited.' %(format(amount,'.2f'), buyer_object.name, format(remain_due, '.2f'))
                 send_sms(sms_text, seller_object.phone)
-                sms_text = 'You have paid taka %s due to %s. The remaining due amount is taka %s. Thanks for shopping with Hishab Limited.' %(format(amount,'.2f'), seller_object.name, format(remain_due, '.2f'))
+
+
+                sms_text = 'Apni %s ke %s taka porishodh korechen. Oboshishto takar poriman %s taka.Hishab -er shathe thakar jonno dhonnobad.' %(buyer_object.name, format(amount,'.2f'), format(remain_due, '.2f'))
+                # sms_text = 'You have paid taka %s due to %s. The remaining due amount is taka %s. Thanks for shopping with Hishab Limited.' %(format(amount,'.2f'), seller_object.name, format(remain_due, '.2f'))
                 send_sms(sms_text, buyer_object.phone)
             return HttpResponse('got_it', content_type="plain/text")
         else:
             sender_object = Consumer.objects.get(phone__endswith=sender_phone)
+
+
+
+
+            # sms_text = 'Apni vul tottho diechen. Onugroho kore shothik tottho die abar cheshta korun. Hishab Lmd-er shathe kenakata korar jonno dhonnobad.'
+            # send_sms(sms_text, sender_object.phone)
             sms_text = 'You have entered wrong input. Please try again with correct information. Thanks for shopping with Hishab Limited.'
             send_sms(sms_text, sender_object.phone)
 
@@ -125,6 +137,10 @@ def send_sms_for_dues(request):
         # print(buyer_name)
         sms_text = 'Dear %s, you have taka %s due to %s. Please pay the bills as soon as possible. ' \
                    'Thanks for shopping with Hishab Limited.' % (buyer_name, format(due,'.2f'), seller_name)
+
+        # sms_text = 'Dear %s, Apnar %s taka baki ache %s er kache. Onugroho kore apnar bokea joto druto shomvob porishodh korun.' \
+        #            'Hishab Lmd-er shathe kenakata korar jonno dhonnbad.' % (buyer_name, format(due,'.2f'), seller_name)
+
         print(a.buyer.phone)
         print(sms_text)
 

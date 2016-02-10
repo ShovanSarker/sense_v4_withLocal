@@ -8,9 +8,9 @@
             <!-- TODO have to add bangla audio here-->
             <!--<prompt>Who did you sell it to ? Press hash after telling the name. Example: tanvir vai, phone 017 3456 67</prompt>-->
 {#            {% if sell %}#}
-                <audio src="http://159.203.66.200/media/ivr_recordings/bn/12.wav" fetchhint="prefetch" />
+                <audio src="http://app.hishab.co/media/ivr_recordings/bn/12.wav" fetchhint="prefetch" />
 {#            {% else %}#}
-{#                <audio src="http://159.203.66.200/media/ivr_recordings/A-04.wav" fetchhint="prefetch" />#}
+{#                <audio src="http://app.hishab.co/media/ivr_recordings/A-04.wav" fetchhint="prefetch" />#}
 {#            {% endif %}#}
 
         </record>
@@ -19,9 +19,9 @@
             <log expr="rec3$.termchar"/>
             <log expr="rec3$.size"/>
             <!-- We all love to hear our own voices: -->
-            <audio src="http://159.203.66.200/media/ivr_recordings/bn/9.wav" fetchhint="prefetch" />
+            <audio src="http://app.hishab.co/media/ivr_recordings/bn/9.wav" fetchhint="prefetch" />
             <!--<prompt>thanks</prompt>-->
-            <submit next="http://159.203.66.200/saverecord/?intro_done=1&amp;level=1&amp;purpose={{ purpose }}&amp;part=3&amp;session.callerid={{ caller }}&amp;tid={{ tid }}" method="post"
+            <submit next="http://app.hishab.co/saverecord/?intro_done=1&amp;level=1&amp;purpose={{ purpose }}&amp;part=3&amp;session.callerid={{ caller }}&amp;tid={{ tid }}" method="post"
                     namelist="rec3" enctype="multipart/form-data" />
         </filled>
     </form>

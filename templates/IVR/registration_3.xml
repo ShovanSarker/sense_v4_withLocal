@@ -6,13 +6,13 @@
             <!--<audio src="http://alpha.sense.ai/media/ivr_voice/1.wav" fetchhint="prefetch" />-->
 
             <!-- TODO have to add bangla audio here-->
-            <!--{% if shop %}<audio src="http://159.203.66.200/media/ivr_recordings/Audio%20recording%202014-12-22%2017-40-20.wav" fetchhint="prefetch" />{% else %}<audio src="http://159.203.66.200/media/ivr_recordings/Audio%20recording%202014-12-22%2017-39-45.wav" fetchhint="prefetch" />{% endif %}-->
+            <!--{% if shop %}<audio src="http://app.hishab.co/media/ivr_recordings/Audio%20recording%202014-12-22%2017-40-20.wav" fetchhint="prefetch" />{% else %}<audio src="http://app.hishab.co/media/ivr_recordings/Audio%20recording%202014-12-22%2017-39-45.wav" fetchhint="prefetch" />{% endif %}-->
             {% if shop %}
-                <audio src="http://159.203.66.200/media/ivr_recordings/bn/4.wav" fetchhint="prefetch" />
+                <audio src="http://app.hishab.co/media/ivr_recordings/bn/4.wav" fetchhint="prefetch" />
             {% else %}
-                <audio src="http://159.203.66.200/media/ivr_recordings/bn/7.wav" fetchhint="prefetch" />
+                <audio src="http://app.hishab.co/media/ivr_recordings/bn/7.wav" fetchhint="prefetch" />
             {% endif %}
-            <!--<audio src="http://159.203.66.200/media/ivr_recordings/03.wav" fetchhint="prefetch" />-->
+            <!--<audio src="http://app.hishab.co/media/ivr_recordings/03.wav" fetchhint="prefetch" />-->
 
         </record>
         <filled>
@@ -20,7 +20,7 @@
             <log expr="rec3$.termchar"/>
             <log expr="rec3$.size"/>
             <!-- We all love to hear our own voices: -->
-            <submit next="http://159.203.66.200/reg/?level=3&amp;tracking_id={{ tracking_id }}" enctype="multipart/form-data" method="post"
+            <submit next="http://app.hishab.co/reg/?level=3&amp;tracking_id={{ tracking_id }}" enctype="multipart/form-data" method="post"
                     namelist="rec3" />
         </filled>
     </form>

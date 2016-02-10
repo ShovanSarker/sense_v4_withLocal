@@ -5,7 +5,7 @@
     <field name="SouthParkCharacter">
 
         <!-- TODO Have to add bangla voice here -->
-        <!--<audio src="http://159.203.66.200/media/ivr_recordings/20141223%20184017.wav" fetchhint="prefetch" />-->
+        <!--<audio src="http://app.hishab.co/media/ivr_recordings/20141223%20184017.wav" fetchhint="prefetch" />-->
         <prompt>Press 1 if you want to sell, press 2 if want to buy</prompt>
         <!-- Define the grammar. -->
         <grammar xml:lang="en-us" root = "myrule" mode="dtmf">
@@ -20,7 +20,7 @@
         <!-- The user was silent, restart the field. -->
         <noinput>
             <!-- TODO Have to add bangla voice here -->
-            <!--<audio src="http://159.203.66.200/media/ivr_recordings/b20141223%20185757.wav" fetchhint="prefetch" />-->
+            <!--<audio src="http://app.hishab.co/media/ivr_recordings/b20141223%20185757.wav" fetchhint="prefetch" />-->
             <prompt>Couldn't understand what have you said. Please repeat</prompt>
             <reprompt/>
         </noinput>
@@ -28,7 +28,7 @@
         <!-- The user said something that was not defined in our grammar. -->
         <nomatch>
             <!-- TODO Have to add bangla voice here -->
-            <!--<audio src="http://159.203.66.200/media/ivr_recordings/a20141223%20185855.wav" fetchhint="prefetch" />-->
+            <!--<audio src="http://app.hishab.co/media/ivr_recordings/a20141223%20185855.wav" fetchhint="prefetch" />-->
             <prompt>Couldn't understand what have you said. Please repeat</prompt>
             <reprompt/>
         </nomatch>
@@ -37,9 +37,9 @@
     <!-- Checks the "SouthParkCharacter" value against each of the valid values. -->
     <filled namelist="SouthParkCharacter">
         <if cond="SouthParkCharacter == '1'">
-            <goto next="http://159.203.66.200/IVR/?intro_done=1&amp;session.callerid={{ caller }}&amp;purpose=sell" />
+            <goto next="http://app.hishab.co/IVR/?intro_done=1&amp;session.callerid={{ caller }}&amp;purpose=sell" />
         <elseif cond="SouthParkCharacter == '2'" />
-            <goto next="http://159.203.66.200/IVR/?intro_done=1&amp;session.callerid={{ caller }}&amp;purpose=buy" />
+            <goto next="http://app.hishab.co/IVR/?intro_done=1&amp;session.callerid={{ caller }}&amp;purpose=buy" />
         </if>
     </filled>
 </form>

@@ -130,8 +130,8 @@ def add_transaction(request):
                                 fraud = True
                                 break
                         if fraud:
-                            fraud_text = '%s has more than taka 200.00 due already in other shop.' \
-                                         'Be careful while trading with this person. Thanks for shopping with Hishab Limited' % buyer_object.name
+                            fraud_text = '%s er onno dokan e 200.00 takar beshi baki royeche.' \
+                                         'Er sathe shabdhan e len den korun. Dhonnobad.' % buyer_object.name
                             print(fraud_text)
                             phone_number_to_send_sms = seller_object.phone
                             send_sms(fraud_text, phone_number_to_send_sms)
@@ -311,22 +311,36 @@ def add_transaction(request):
             sms_total_bill = post_data['transactionTotal']
             sms_total_paid = post_data['transactionPaid']
             sms_total_due = post_data['transactionDue']
-            buyer_sms = '%s, you have purchased %s ' \
-                        'from %s.' \
-                        ' Total bill : taka %s, Paid : taka %s, Due : taka %s.' \
-                        ' Thanks for shopping with Hishab Limited ' % (sms_text_buyer,
-                                                                       sms_text_products, sms_text_seller,
-                                                                       format(float(sms_total_bill),'.2f'),
-                                                                       format(float(sms_total_bill)-float(sms_total_due),'.2f'),
-                                                                       format(float(sms_total_due),'.2f'))
-            seller_sms = '%s, you have sold %s ' \
-                         'to %s.' \
-                         ' Total bill : taka %s, Paid : taka %s,Due : taka %s.' \
-                         ' Thanks for shopping with Hishab Limited ' % (sms_text_seller,
-                                                                        sms_text_products, sms_text_buyer,
-                                                                        format(float(sms_total_bill),'.2f'),
-                                                                        format(float(sms_total_bill)-float(sms_total_due),'.2f'),
-                                                                        format(float(sms_total_due),'.2f'))
+            # buyer_sms = '%s, you have purchased %s ' \
+            #             'from %s.' \
+            #             ' Total bill : taka %s, Paid : taka %s, Due : taka %s.' \
+            #             ' Thanks for shopping with Hishab Limited ' % (sms_text_buyer,
+            #                                                            sms_text_products, sms_text_seller,
+            #                                                            format(float(sms_total_bill),'.2f'),
+            #                                                            format(float(sms_total_bill)-float(sms_total_due),'.2f'),
+            #                                                            format(float(sms_total_due),'.2f'))
+            buyer_sms = '%s, Apni %s -er kach theke. %s kroy korechen' \
+                        ' Mot bill : taka %s, porishodh kora hoyeche : taka %s, bokea ache : taka %s.' \
+                        ' Hishab-er shathe kenakata korar jonno dhonnobad ' % (sms_text_buyer, sms_text_seller,
+                                                                               sms_text_products,
+                                                                               format(float(sms_total_bill),'.2f'),
+                                                                               format(float(sms_total_bill)-float(sms_total_due),'.2f'),
+                                                                               format(float(sms_total_due),'.2f'))
+            # seller_sms = '%s, you have sold %s ' \
+            #              'to %s.' \
+            #              ' Total bill : taka %s, Paid : taka %s,Due : taka %s.' \
+            #              ' Thanks for shopping with Hishab Limited ' % (sms_text_seller,
+            #                                                             sms_text_products, sms_text_buyer,
+            #                                                             format(float(sms_total_bill),'.2f'),
+            #                                                             format(float(sms_total_bill)-float(sms_total_due),'.2f'),
+            #                                                             format(float(sms_total_due),'.2f'))
+            seller_sms = '%s, Apni %s -er kache bikroy %s korechen ' \
+                         ' Mot Bill : taka %s, Porishodh kora hoyeche : taka %s, Bokea ache : taka %s.' \
+                         ' Hishab Lmd-er shathe kenakata korar jonno dhonnobad ' % (sms_text_seller, sms_text_buyer,
+                                                                                    sms_text_products,
+                                                                                    format(float(sms_total_bill),'.2f'),
+                                                                                    format(float(sms_total_bill)-float(sms_total_due),'.2f'),
+                                                                                    format(float(sms_total_due),'.2f'))
             # caller scoring update !
             send_sms(buyer_sms, buyer_object.phone)
             send_sms(seller_sms, seller_object.phone)

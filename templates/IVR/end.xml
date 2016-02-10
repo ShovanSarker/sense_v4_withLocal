@@ -1,4 +1,4 @@
 {% extends "IVR/base.xml" %}
 {% block content %}
-   <audio src="http://159.203.66.200/media/ivr_recordings/bn/9.wav" fetchhint="prefetch" />
+   <audio src="http://app.hishab.co/media/ivr_recordings/bn/9.wav" fetchhint="prefetch" />
 {% endblock %}

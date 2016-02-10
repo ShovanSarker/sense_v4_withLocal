@@ -4,9 +4,9 @@
 <form id="MainMenu">
 
     <field name="SouthParkCharacter">
-        <audio src="http://159.203.66.200/media/ivr_recordings/bn/1.wav" fetchhint="prefetch" />
+        <audio src="http://app.hishab.co/media/ivr_recordings/bn/1.wav" fetchhint="prefetch" />
 <!--<prompt>Welcome to hishab</prompt>-->
-        <audio src="http://159.203.66.200/media/ivr_recordings/bn/2.wav" fetchhint="prefetch" />
+        <audio src="http://app.hishab.co/media/ivr_recordings/bn/2.wav" fetchhint="prefetch" />
         <prompt>or press 3 if you are a distributor</prompt>
 <!--<prompt>Press one if you are a shopkeeper or two if you are consumer</prompt>-->
         <!-- Define the grammar. -->
@@ -23,7 +23,7 @@
         <!-- The user was silent, restart the field. -->
         <noinput>
             <!-- TODO Have to add bangla voice here -->
-{#            <audio src="http://159.203.66.200/media/ivr_recordings/B-06.wav" fetchhint="prefetch" />#}
+{#            <audio src="http://app.hishab.co/media/ivr_recordings/B-06.wav" fetchhint="prefetch" />#}
             <!--<prompt>Please repeat</prompt>-->
             <reprompt/>
 
@@ -32,7 +32,7 @@
         <!-- The user said something that was not defined in our grammar. -->
         <nomatch>
             <!-- TODO Have to add bangla voice here -->
-{#            <audio src="http://159.203.66.200/media/ivr_recordings/B-06.wav" fetchhint="prefetch" />#}
+{#            <audio src="http://app.hishab.co/media/ivr_recordings/B-06.wav" fetchhint="prefetch" />#}
             <!--<prompt>Please repeat</prompt>-->
             <reprompt/>
         </nomatch>
@@ -41,11 +41,11 @@
     <!-- Checks the "SouthParkCharacter" value against each of the valid values. -->
     <filled namelist="SouthParkCharacter">
         <if cond="SouthParkCharacter == '2'">
-            <goto next="http://159.203.66.200/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Consumer&amp;level=1" />
+            <goto next="http://app.hishab.co/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Consumer&amp;level=1" />
         <elseif cond="SouthParkCharacter == '1'" />
-            <goto next="http://159.203.66.200/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Shop&amp;level=1" />
+            <goto next="http://app.hishab.co/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Shop&amp;level=1" />
         <elseif cond="SouthParkCharacter == '3'" />
-            <goto next="http://159.203.66.200/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Distributor&amp;level=1" />
+            <goto next="http://app.hishab.co/reg/?session.callerid={{ caller }}&amp;session.calledid={{ calledid }}&amp;caller_type=Distributor&amp;level=1" />
         </if>
     </filled>
 </form>

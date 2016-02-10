@@ -195,7 +195,7 @@ def save_registration_voice(request):
             filename = '/home/exor/static/media/' + tempname
             filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
-            if new_voice_reg.caller_type == 'Shop':
+            if new_voice_reg.caller_type == 'Shop' or new_voice_reg.caller_type == 'Distributor':
                 shop = True
             else:
                 shop = False
@@ -210,7 +210,7 @@ def save_registration_voice(request):
             filename = '/home/exor/static/media/' + tempname
             filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
-            if new_voice_reg.caller_type == 'Shop':
+            if new_voice_reg.caller_type == 'Shop' or new_voice_reg.caller_type == 'Distributor':
                 return render(request, 'IVR/registration_5.xml', {'tracking_id': tracking_id},  content_type='application/xml')
             else:
                 return render(request, 'IVR/registration_4.xml', {'tracking_id': tracking_id},  content_type='application/xml')

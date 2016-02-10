@@ -85,7 +85,8 @@ def add_subscriber(request):
                     notification = 'Transcriber Successfully Added.'
                     # add_to_transcriber = Transcriber(name=post_data['username'])
                     # add_to_transcriber.save()
-                    welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
+                    # welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
+                    welcome_sms = 'Hishab-er shathe thakar jonno Dhonnobad. app.hishab.co te login korar shomoe apnar username hishebe %s ebong password hishebe %s bebohar korun . Aro tottho janar jonno visit korun www.hishab.co .' % (phone, child)
                     send_sms(welcome_sms, phone)
                     notification = 'New User ' + name + ' was added successfully'
         else:
@@ -182,7 +183,8 @@ def add_subscriber_outside(request):
             add_new_subscriber = ACL(loginUser=new_consumer,
                                      loginID=phone[-9:])
             add_new_subscriber.save()
-            welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
+            # welcome_sms = 'Thanks for connecting with hishab Limited. Use %s as username and %s as password while logging in to app.hishab.co . For more info go to www.hishab.co .' % (phone, child)
+            welcome_sms = 'Hishab-er shathe thakar jonno Dhonnobad. app.hishab.co te login korar shomoe apnar username hishebe %s ebong password hishebe %s bebohar korun . Aro tottho janar jonno visit korun www.hishab.co .' % (phone, child)
             if 'record_id' in post_data:
                 if not post_data['record_id'] == '':
                     call_record = VoiceReg.objects.get(pk=post_data['record_id'])
