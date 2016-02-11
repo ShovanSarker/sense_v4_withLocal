@@ -42,8 +42,8 @@ def save_record_voice(request):
                                       level=get_data['level'])
             save_record.save()
             tempname = str(save_record.level1_voice_part1)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             print(filename)
             print(filenamenew)
@@ -60,8 +60,8 @@ def save_record_voice(request):
             save_record.level1_voice_part2 = file_data['rec2']
             save_record.save()
             tempname = str(save_record.level1_voice_part2)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             if get_data['purpose'] == 'Sell':
                 sell = True
@@ -75,8 +75,8 @@ def save_record_voice(request):
             save_record.level1_voice_part3 = file_data['rec3']
             save_record.save()
             tempname = str(save_record.level1_voice_part3)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             return render(request, 'IVR/end.xml', content_type='application/xml')
     elif get_data['level'] == '2':
@@ -93,8 +93,8 @@ def save_record_voice(request):
                                       level=get_data['level'])
             save_record.save()
             tempname = str(save_record.level1_voice_part1)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             if get_data['purpose'] == 'Sell':
                 sell = True
@@ -109,8 +109,8 @@ def save_record_voice(request):
             save_record.level1_voice_part2 = file_data['rec42']
             save_record.save()
             tempname = str(save_record.level1_voice_part2)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             if get_data['purpose'] == 'Sell':
                 sell = True
@@ -124,8 +124,8 @@ def save_record_voice(request):
             save_record.level1_voice_part3 = file_data['rec43']
             save_record.save()
             tempname = str(save_record.level1_voice_part3)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             return render(request, 'IVR/end.xml', content_type='application/xml')
     elif get_data['level'] == '3':
@@ -140,8 +140,8 @@ def save_record_voice(request):
                                   level=get_data['level'])
         save_record.save()
         tempname = str(save_record.level3)
-        filename = '/home/exor/static/media/' + tempname
-        filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+        filename = '/home/exor/web/static/media/' + tempname
+        filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
         shutil.copy2(filename, filenamenew)
         return render(request, 'IVR/end.xml', content_type='application/xml')
     else:
@@ -192,8 +192,8 @@ def save_registration_voice(request):
             # new_voice_regname = new_voice_reg.registration_voice_name
             # print(new_voice_regname)
             tempname = str(new_voice_reg.registration_voice_name)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             if new_voice_reg.caller_type == 'Shop' or new_voice_reg.caller_type == 'Distributor':
                 shop = True
@@ -207,8 +207,8 @@ def save_registration_voice(request):
             new_voice_reg.registration_voice_address = file_data['rec3']
             new_voice_reg.save()
             tempname = str(new_voice_reg.registration_voice_address)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             if new_voice_reg.caller_type == 'Shop' or new_voice_reg.caller_type == 'Distributor':
                 return render(request, 'IVR/registration_5.xml', {'tracking_id': tracking_id},  content_type='application/xml')
@@ -220,8 +220,8 @@ def save_registration_voice(request):
             new_voice_reg.registration_voice_age = file_data['rec4']
             new_voice_reg.save()
             tempname = str(new_voice_reg.registration_voice_age)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             return render(request, 'IVR/registration_5.xml', {'tracking_id': tracking_id},  content_type='application/xml')
         elif get_data['level'] == '5':
@@ -230,8 +230,8 @@ def save_registration_voice(request):
             new_voice_reg.registration_voice_intro = file_data['rec5']
             new_voice_reg.save()
             tempname = str(new_voice_reg.registration_voice_intro)
-            filename = '/home/exor/static/media/' + tempname
-            filenamenew = '/home/exor/static/media/' + tempname[:-3] + 'wav'
+            filename = '/home/exor/web/static/media/' + tempname
+            filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
             shutil.copy2(filename, filenamenew)
             return render(request, 'IVR/end.xml', content_type='application/xml')
     else:
