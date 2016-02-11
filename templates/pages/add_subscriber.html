@@ -107,7 +107,7 @@
                                 <th>User Level</th>
                                 <th>Successful Calls</th>
                                 <th>Calls with Error</th>
-                                <!--<th>Action</th>-->
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -119,7 +119,7 @@
                                     <td>{{ subscriber.user_level }}</td>
                                     <td>{{ subscriber.total_successful_call }}</td>
                                     <td>{{ subscriber.number_of_calls_with_error }}</td>
-                                    <!--<td><a href="/addsubscriber/?delete={{subscriber.id}}" class="btn btn-danger btn-xs" role="button">Delete</a></td>-->
+                                    <td><a href="/addsubscriber/?delete={{subscriber.id}}" class="btn btn-info btn-xs" role="button">Send SMS Statement</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

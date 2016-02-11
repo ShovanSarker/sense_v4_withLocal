@@ -8,7 +8,8 @@ from subscriber.models import Consumer, ConsumerType, Recharge, TotalRecharge, A
 from product.models import Product
 from voice_records.models import VoiceRecord, VoiceReg
 from sms.models import SMSPayment
-from local_lib.v3 import is_number, is_float
+# from local_lib.v3 import is_number, is_float
+from local_lib.v3 import is_number, is_float, is_bangladeshi_number, is_japanese_number, send_sms
 from transaction.models import Transaction, ProductsInTransaction, BuyerSellerAccount, dueTransaction
 from shop_inventory.models import Inventory, BuySellProfitInventoryIndividual, BuySellProfitInventory
 from transcriber_management.models import Transcriber, TranscriberInTranscription, FailedTranscription
@@ -1143,8 +1144,46 @@ def add_subscriber_page(request):
         delID = get_data['delete']
         if Consumer.objects.filter(id=delID).exists():
             item_for_delete = Consumer.objects.get(id=delID)
-            notification = 'The Consumer : ' + item_for_delete.name + ' is deleted successfully.'
-            item_for_delete.delete()
+            notification = 'Daily statement for the user : ' + item_for_delete.name + ' is sent successfully.'
+            # item_for_delete.delete()
+            sales_statement = ''
+            purchase_statement = ''
+            today_date = datetime.date.today()
+            today_day = today_date.day
+            today_month = today_date.month
+            today_year = today_date.year
+            # for selling
+            sell_transactions = Transaction.objects.filter(seller=item_for_delete, DateAdded__day=today_day,
+                                                           DateAdded__month=today_month, DateAdded__year=today_year)
+            total_sales = 0
+            total_due = 0
+            total_paid = 0
+            for sell_transaction in sell_transactions:
+                total_sales += sell_transaction.total_amount
+                total_paid += sell_transaction.total_paid
+                total_due += sell_transaction.total_due
+            if total_sales > 0:
+                sales_statement = ' bikroy korechen mot: ' + str(total_sales) + ' takar. Nogod peyechen : ' + \
+                                  str(total_paid) + ' taka ebong baki royeche ' + str(total_due) + ' taka.'
+            # for buying
+            buy_transactions = Transaction.objects.filter(buyer=item_for_delete, DateAdded__day=today_day,
+                                                          DateAdded__month=today_month, DateAdded__year=today_year)
+            total_purchase = 0
+            total_due = 0
+            total_paid = 0
+            for buy_transaction in buy_transactions:
+                total_purchase += buy_transaction.total_amount
+                total_paid += buy_transaction.total_paid
+                total_due += buy_transaction.total_due
+            if total_purchase > 0:
+                purchase_statement = ' kinechen mot: ' + str(total_purchase) + ' takar. Nogod diyechen : ' + \
+                                     str(total_paid) + ' taka ebong baki royeche ' + str(total_due) + ' taka.'
+            final_text = 'aj apni' + sales_statement + purchase_statement + ' Dhonnobad'
+
+            if total_purchase > 0 or total_sales > 0:
+                print(final_text)
+                send_sms(final_text, item_for_delete.phone)
+
         else:
             notification = 'Item not found'
 
@@ -2004,7 +2043,7 @@ def change_password(request):
             elif user_object.type.type_name == 'Buyer':
                 display = render(request, 'pages/Consumer/change_password.html', {'transcriber_name': transcriber_name,
                                                                                   'wrong': wrong,
-                                                                              'text': text})
+                                                                                  'text': text})
     else:
         wrong = False
         if user_object.type.type_name == 'Distributor':

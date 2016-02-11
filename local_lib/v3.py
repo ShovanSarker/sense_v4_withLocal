@@ -1,6 +1,3 @@
-__author__ = 'shovan'
-
-import twilio
 from twilio.rest import TwilioRestClient
 
 
@@ -52,16 +49,14 @@ def send_sms(body, number):
         account_sid = "AC437477fe6d2500ac00bd6a743b9b4f80"
         auth_token = "02f01bb4158b27b867519aa72e179560"
         client = TwilioRestClient(account_sid, auth_token)
-        try:
-            message = client.messages.create(to=phone_number, from_="+14439633299",
+        # try:
+        message = client.messages.create(to=phone_number, from_="+447903574899",
                                          body=body)
-            print('sent')
-            return 'its sent!'
-        except twilio.TwilioRestException as e:
-            print e
-            return 'something bad happened'
-
-
+        print('sent')
+        return 'its sent!'
+        # except twilio.TwilioRestException as e:
+        #     print e
+        #     return 'something bad happened'
     else:
         print('not sent')
         return 'something bad happened'
