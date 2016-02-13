@@ -833,16 +833,16 @@ def report_product_json(request):
                     for product_in_this_transaction in ProductsInTransaction.objects.filter(TID=this_day_transaction):
 
                         if product_in_this_transaction.product == a_product:
-                            if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
-                                if a_product.bulk_to_retail_unit == 0:
-                                    count = count + product_in_this_transaction.quantity
-                                    product_price = product_price + product_in_this_transaction.price_per_unit
-                                else:
-                                    count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
-                                    product_price = product_price + product_in_this_transaction.price_per_unit / a_product.bulk_to_retail_unit
-                            else:
-                                count = count + product_in_this_transaction.quantity
-                                product_price = product_price + product_in_this_transaction.price_per_unit
+                            # if product_in_this_transaction.unit == a_product.bulk_wholesale_unit:
+                            #     if a_product.bulk_to_retail_unit == 0:
+                            #         count = count + product_in_this_transaction.quantity
+                            #         product_price = product_price + product_in_this_transaction.price_per_unit
+                            #     else:
+                            #         count = count + product_in_this_transaction.quantity * a_product.bulk_to_retail_unit
+                            #         product_price = product_price + product_in_this_transaction.price_per_unit
+                            # else:
+                            count = count + product_in_this_transaction.quantity
+                            product_price = product_price + product_in_this_transaction.price_per_unit * product_in_this_transaction.quantity
 
                 if count > 0:
                     if day_string:
