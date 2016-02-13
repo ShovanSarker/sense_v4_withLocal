@@ -1171,6 +1171,9 @@ def add_subscriber_page(request):
 
             buy_transactions = Transaction.objects.filter(buyer=item_for_delete, DateAdded__day=today_day,
                                                           DateAdded__month=today_month, DateAdded__year=today_year)
+            # if item_for_delete.type.type_name == 'Distributor':
+            # buy_transactions = Transaction.objects.filter(buyer=item_for_delete, DateAdded__day=today_day,
+            #                                               DateAdded__month=today_month, DateAdded__year=today_year)
             total_purchase = 0
             total_due = 0
             total_paid = 0
