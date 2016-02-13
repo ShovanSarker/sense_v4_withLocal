@@ -1166,9 +1166,9 @@ def add_subscriber_page(request):
                 sales_statement = ' bikroy korechen mot: ' + str(total_sales) + ' takar. nogod peyechen : ' + \
                                   str(total_paid) + ' taka ebong baki royeche ' + str(total_due) + ' taka.'
             # for buying
-            if item_for_delete.type.type_name == 'Distributor':
-            buy_transactions = Transaction.objects.filter(buyer=item_for_delete, DateAdded__day=today_day,
-                                                          DateAdded__month=today_month, DateAdded__year=today_year)
+            # if item_for_delete.type.type_name == 'Distributor':
+            # buy_transactions = Transaction.objects.filter(buyer=item_for_delete, DateAdded__day=today_day,
+            #                                               DateAdded__month=today_month, DateAdded__year=today_year)
             total_purchase = 0
             total_due = 0
             total_paid = 0
