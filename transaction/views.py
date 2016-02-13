@@ -320,7 +320,7 @@ def add_transaction(request):
             #                                                            format(float(sms_total_bill)-float(sms_total_due),'.2f'),
             #                                                            format(float(sms_total_due),'.2f'))
             buyer_sms = '%s, Apni %s -er kach theke kroy korechen %s ' \
-                        ' Mot bill : taka %s, porishodh kora hoyeche : taka %s, baki ache : taka %s.' \
+                        ' Mot bill : taka %s, porishodh kora hoyeche : taka %s, Baki ache : taka %s.' \
                         ' Hishab Ltd-er shathe kenakata korar jonno dhonnobad ' % (sms_text_buyer, sms_text_seller,
                                                                                sms_text_products,
                                                                                format(float(sms_total_bill),'.2f'),
@@ -335,7 +335,7 @@ def add_transaction(request):
             #                                                             format(float(sms_total_bill)-float(sms_total_due),'.2f'),
             #                                                             format(float(sms_total_due),'.2f'))
             seller_sms = '%s, Apni %s -er kache bikroy korechen %s ' \
-                         ' Mot Bill : taka %s, Porishodh kora hoyeche : taka %s, Boki ache : taka %s.' \
+                         ' Mot Bill : taka %s, Porishodh kora hoyeche : taka %s, Baki ache : taka %s.' \
                          ' Hishab Ltd-er shathe kenakata korar jonno dhonnobad ' % (sms_text_seller, sms_text_buyer,
                                                                                     sms_text_products,
                                                                                     format(float(sms_total_bill),'.2f'),
