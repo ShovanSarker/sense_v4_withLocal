@@ -1163,7 +1163,7 @@ def add_subscriber_page(request):
                 total_paid += sell_transaction.total_paid
                 total_due += sell_transaction.total_due
             if total_sales > 0:
-                sales_statement = ' bikroy korechen mot: ' + str(total_sales) + ' takar. Nogod peyechen : ' + \
+                sales_statement = ' bikroy korechen mot: ' + str(total_sales) + ' takar. nogod peyechen : ' + \
                                   str(total_paid) + ' taka ebong baki royeche ' + str(total_due) + ' taka.'
             # for buying
             if item_for_delete.type.type_name == 'Distributor':
@@ -1179,7 +1179,7 @@ def add_subscriber_page(request):
             if total_purchase > 0:
                 purchase_statement = ' kinechen mot: ' + str(total_purchase) + ' takar. Nogod diyechen : ' + \
                                      str(total_paid) + ' taka ebong baki royeche ' + str(total_due) + ' taka.'
-            final_text = 'aj apni' + sales_statement + purchase_statement + ' Dhonnobad'
+            final_text = 'Aj apni' + sales_statement + purchase_statement + ' Dhonnobad'
 
             if total_purchase > 0 or total_sales > 0:
                 print(final_text)
