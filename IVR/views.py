@@ -48,19 +48,19 @@ def incoming_call(request):
                     return render(request, 'IVR/buyer_level1_part1.xml',
                                   {'caller': get_data['session.callerid'], 'purpose': 'sell', 'sell': True},
                                   content_type='application/xml')
-            elif user_level == 2:
-                if caller.type.type_name == 'Buyer':
-                    sell = False
-                    call_purpose = 'buy'
-                else:
-                    sell = True
-                    call_purpose = 'sell'
+            # elif user_level == 5:
+            #     if caller.type.type_name == 'Buyer':
+            #         sell = False
+            #         call_purpose = 'buy'
+            #     else:
+            #         sell = True
+            #         call_purpose = 'sell'
+            #
+            #     return render(request, 'IVR/level2p1.xml',
+            #                   {'caller': get_data['session.callerid'], 'purpose': call_purpose, 'sell': sell},
+            #                   content_type='application/xml')
 
-                return render(request, 'IVR/level2p1.xml',
-                              {'caller': get_data['session.callerid'], 'purpose': call_purpose, 'sell': sell},
-                              content_type='application/xml')
-
-            elif user_level == 3:
+            else:
                 if caller.type.type_name == 'Seller':
                     sell = False
                     call_purpose = 'buy'
