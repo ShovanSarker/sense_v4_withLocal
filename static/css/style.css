@@ -3106,8 +3106,9 @@ body.modal-open {
 .logo-name {
   color: #a3a3a3;
   /*font-family: "Sofia",cursive;*/
-  font-family: Josefin Sans;
-  font-size: 80px !important;
+  /*font-family: Josefin Sans;*/
+  font-family: 'Raleway';
+  font-size: 60px !important;
   letter-spacing: -7px;
   margin-bottom: 0;
   /*margin-left: -30px;*/
@@ -4213,3 +4214,9 @@ Transcription components
   margin-right: 0;
 }
 
+.login-logo{
+  height: 50px;
+  width: 50px;
+  margin-left: 5px;
+  margin-top: -5px;
+}

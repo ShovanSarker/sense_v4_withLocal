@@ -11,6 +11,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,700,500" rel="stylesheet" type="text/css"/>
     <!-- Data Tables -->
     <!--<link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" rel="stylesheet">-->
     <link href="{% static 'css/plugins/dataTables/dataTables.bootstrap.css' %}" rel="stylesheet">
@@ -70,10 +71,11 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown logo-text profile-element">
-                        <h3>Hishab Limited</h3>
+{#                        <h3>Hishab Limited</h3>#}
+                        <img src="{% static 'img/logo-2.png' %}" alt="" style="height: 100px; width: 100px; margin-left: 20px;">
                     </div>
                     <div class="logo-element">
-                        SE
+                        HL
                     </div>
                 </li>
                 <li class="active">
@@ -229,7 +231,7 @@
         {% block content %} {% endblock %}
         <div class="footer">
             <div>
-                <strong>Copyright</strong> Hishab Limited &copy; 2014-2015
+                <strong>Copyright</strong> <a href="http://hishab.co/" target="_blank">Hishab Ltd</a> &copy; 2015-2016
             </div>
         </div>
     </div>

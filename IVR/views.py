@@ -83,8 +83,25 @@ def incoming_call2(request):
     get_data = request.GET
     print(get_data)
     if 'session.callerid' in get_data:
-        phone = get_data['session.callerid'][3:]
-        return render(request, 'IVR/testivr.xml', {'caller': get_data['session.callerid']}, content_type='application/xml')
+        phone = get_data['session.callerid'][-6:]
+        if Consumer.objects.filter(phone__endswith=phone).exists():
+            caller = Consumer.objects.get(phone__endswith=phone)
+            number_of_success = caller.total_successful_call
+            number_of_errors = caller.number_of_calls_with_error
+            user_level = int(math.floor(float(number_of_success)/3.0 - float(number_of_errors)/2.0) + 1)
+            if user_level < 1:
+                user_level = 1
+            elif user_level > 1:
+                user_level = 3
+            caller.user_level = user_level
+            caller.save()
+            '''caller level updated here '''
+
+            if user_level == 1:
+                return HttpResponse("1#1", content_type="text/plain")
+            else:
+                return HttpResponse("2#2", content_type="text/plain")
+        else:
+            return HttpResponse("0#0", content_type="text/plain")
     else:
         return render(request, 'IVR/base.xml', content_type='application/xml')
-
