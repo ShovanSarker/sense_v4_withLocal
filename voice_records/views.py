@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import datetime
-from local_lib.v3 import is_bangladeshi_number, is_japanese_number
+from local_lib.v3 import is_bangladeshi_number, is_japanese_number, send_sms
 from .models import VoiceRecord, VoiceReg
 from subscriber.models import Consumer
 from transcriber_management.models import FailedTranscription, Transcriber
@@ -47,6 +47,7 @@ def save_record_voice(request):
             # shutil.copy2(filename, filenamenew)
             print(filename)
             print(filenamenew)
+            send_sms('There is a new transaction. Please transcribe!', '8801753248170')
             # if get_data['purpose'] == 'Sell':
             #     sell = True
             # else:
@@ -144,6 +145,7 @@ def save_record_voice(request):
         filename = '/home/exor/web/static/media/' + tempname
         filenamenew = '/home/exor/web/static/media/' + tempname[:-3] + 'wav'
         # shutil.copy2(filename, filenamenew)
+        send_sms('There is a new transaction. Please transcribe!', '8801753248170')
         return render(request, 'IVR/end.xml', content_type='application/xml')
     else:
         return render(request, 'IVR/base.xml', content_type='application/xml')
@@ -183,6 +185,7 @@ def save_registration_voice(request):
             else:
                 shop = False
             print(tracking_id)
+            send_sms('There is a new registration. Please transcribe!', '8801753248170')
             return render(request, 'IVR/registration_2.xml', {'shop': shop, 'tracking_id': tracking_id},  content_type='application/xml')
         elif get_data['level'] == '2':
             print("here")
